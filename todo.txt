@@ -1,0 +1,6 @@
+@TODO:
+1. SERVER: JWT Login System [done]
+2. SERVER: File Upload
+3. CLIENT: Login Page
+4. CLIENT: File Gallery
+5. CLIENT: File Upload
