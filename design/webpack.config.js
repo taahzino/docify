@@ -4,7 +4,9 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 const config = {
     entry: {
-        app: "./src/scripts/index.js",
+        main: "./src/scripts/main.js",
+        signup: "./src/scripts/signup.js",
+        login: "./src/scripts/login.js",
     },
     mode: "development",
     devServer: {
@@ -15,7 +17,7 @@ const config = {
     },
     target: "web",
     output: {
-        filename: "app.js",
+        filename: "[name].js",
         path: path.resolve(__dirname, "dist"),
         assetModuleFilename: "images/[hash][ext][query]",
     },
@@ -25,7 +27,22 @@ const config = {
             chunkFilename: "[id].css",
         }),
         new HTMLWebpackPlugin({
+            inject: true,
             template: "./src/index.html",
+            filename: "index.html",
+            chunks: ["main"],
+        }),
+        new HTMLWebpackPlugin({
+            inject: true,
+            template: "./src/signup.html",
+            filename: "signup.html",
+            chunks: ["signup"],
+        }),
+        new HTMLWebpackPlugin({
+            inject: true,
+            template: "./src/login.html",
+            filename: "login.html",
+            chunks: ["login"],
         }),
     ],
     module: {

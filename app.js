@@ -2,6 +2,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const colors = require("colors");
+const cors = require("cors");
 const cookieParser = require('cookie-parser');
 
 // Configure dotenv
@@ -21,6 +22,12 @@ const { PORT } = process.env;
 const app = express();
 
 // Middlewares
+app.use(
+    cors({
+        origin: ["http://localhost:8080"],
+        optionsSuccessStatus: 200,
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

@@ -5,24 +5,179 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webpack</title>
+    <title>Docify</title>
     <link rel="shortcut icon" href="./images/js.png" type="image/x-icon">
 </head>
 
-<body>
-    <div class="card">
-        <h1>Get Started with Webpack-Starter-Kit</h1>
-        <hr>
-        <br>
-        <ul>
-            <li>
-                This Kit includes html-loader, css-loader, scss-loader, babel-loader
-            </li>
-            <li>Live Reload functionality is enabled</li>
-            <li>Run `npm start` to start the webpack-dev-server</li>
-            <li>Run `npm build` to build to project for production</li>
-        </ul>
-        <a href="https://github.com/tushariar/webpack">⭐ Give a star! </a>
+<body class="bg-dark">
+    <div class="container my-4 rounded d-flex align-items-center justify-content-center">
+        <div class="container bg-white rounded py-4 dashboard">
+            <div class="d-flex justify-content-between">
+                <h4>Dashboard</h4>
+                <div>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newdoc"><i
+                            class="bi bi-plus-circle"></i></button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profilemodal"><i
+                            class="bi bi-person"></i></button>
+                </div>
+            </div>
+            <hr>
+            <div class="d-none" id="nodocmsg">No document uploaded yet</div>
+            <div class="row p-2">
+                <div class="col-sm-12 col-md-4 col-lg-3 p-3 gallery_item" id="doc_555555">
+                    <div class="border rounded p-1">
+                        <div class="image_container">
+                            <img src="./images/nid_sample.jpg" alt="" class="img-fluid rounded">
+                        </div>
+                        <h5 class="doc_title">Smart NID Card</h5>
+                        <div class="actions my-2 d-flex align-items-center justify-content-between">
+                            <a href="" class="downloader" download>
+                                <button class="btn btn-primary mr-4"><i class="bi bi-download"></i></button>
+                            </a>
+                            <button class="btn btn-success mailButton" data-bs-toggle="modal"
+                                data-bs-target="#maildoc"><i class="bi bi-envelope"></i></button>
+                            <button class="btn btn-dark editButton" data-bs-toggle="modal" data-bs-target="#editdoc"><i
+                                    class="bi bi-pencil"></i></button>
+                            <button class="btn btn-danger deleteButton"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3 p-3 gallery_item" id="doc_9999">
+                    <div class="border rounded p-1">
+                        <div class="image_container">
+                            <img src="./images/nid_sample.jpg" alt="" class="img-fluid rounded">
+                        </div>
+                        <h5 class="doc_title">Smart NID Card 2</h5>
+                        <div class="actions my-2 d-flex align-items-center justify-content-between">
+                            <a href="" class="downloader" download>
+                                <button class="btn btn-primary mr-4"><i class="bi bi-download"></i></button>
+                            </a>
+                            <button class="btn btn-success mailButton" data-bs-toggle="modal"
+                                data-bs-target="#maildoc"><i class="bi bi-envelope"></i></button>
+                            <button class="btn btn-dark editButton" data-bs-toggle="modal" data-bs-target="#editdoc"><i
+                                    class="bi bi-pencil"></i></button>
+                            <button class="btn btn-danger deleteButton"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal profilemodal fade" id="profilemodal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hi, Fulan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" value="Fulan Ibn Fulan">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" value="fulan@devtahsin.com" disabled>
+                            <div class="form-text">You can't change your email.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" maxlength="11" value="01712345678">
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="currentpassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentpassword">
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="newpassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newpassword">
+                            <div class="form-text">Leave this empty if you do not want to change your password</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal newdoc fade" id="newdoc" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add new doc</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Select file</label>
+                            <input class="form-control" type="file" id="formFile" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal editdoc fade" id="editdoc" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit doc</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="docID" class="form-label">Document ID</label>
+                            <input type="text" class="form-control" id="docID" disabled value="doc_id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="previoustitle" class="form-label">Previous title</label>
+                            <input type="text" class="form-control" id="previoustitle" disabled value="Previous title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newtitle" class="form-label">New title</label>
+                            <input type="text" class="form-control" id="newtitle" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Doc</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal maildoc fade" id="maildoc" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Mail doc</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="mailDocID" class="form-label">Document ID</label>
+                            <input type="text" class="form-control" id="mailDocID" disabled value="doc_id">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mailDocTitle" class="form-label">Document Title</label>
+                            <input type="text" class="form-control" id="mailDocTitle" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mail_subject" class="form-label">Email Subject</label>
+                            <input type="text" class="form-control" id="mail_subject" value="">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Doc</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

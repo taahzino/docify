@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docify</title>
+    <link rel="shortcut icon" href="./images/js.png" type="image/x-icon">
+</head>
+
+<body class="bg-dark">
+    <div class="container my-4 rounded d-flex flex-column align-items-center justify-content-center">
+        <form class="form-card bg-white p-4 rounded" id="signupForm">
+            <h2 class="text-center">Docify</h2>
+            <p class="text-center">An address for your documents</p>
+            <hr>
+            <div class="alert alert-warning" id="errorMsg" style="display: none;"></div>
+            <div class="alert alert-success" id="successMsg" style="display: none;"></div>
+            <h4 class="">Signup</h4>
+            <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email">
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" maxlength="11">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <div class="mb-3">
+                <label for="password2" class="form-label">Repeat Password</label>
+                <input type="password" class="form-control" id="password2">
+            </div>
+            <div>
+                <span>Already have an account? </span><a href="./login.html">Login</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
