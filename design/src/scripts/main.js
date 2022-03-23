@@ -2,8 +2,13 @@ import "../index.html";
 import "./global";
 import ImgPreviewer from "img-previewer";
 import Fnon from "fnon";
+import axios from "axios";
+import { setAlert, removeAlert } from "./alerts";
 
-const imgPreviewer = new ImgPreviewer(".dashboard");
+const errorMsg = document.querySelector("#errorMsg");
+const successMsg = document.querySelector("#successMsg");
+
+const imgPreviewer = new ImgPreviewer(".gallery_container");
 
 const galleryItems = document.querySelectorAll(".gallery_item");
 const editdocModal = document.querySelector(".modal#editdoc");
@@ -65,4 +70,51 @@ galleryItems.forEach((item) => {
             }
         );
     });
+});
+
+const newdocModal = document.querySelector(".modal#newdoc");
+const newdocForm = document.querySelector("#newdocForm");
+
+newdocForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.querySelector(
+        "#newdocForm input[name='newdoc_title']"
+    );
+    const file = document.querySelector(
+        "#newdocForm input[name='newdoc_file']"
+    );
+
+    const formData = new FormData();
+    console.log(title.value);
+    console.log(file.files);
+
+    formData.append("title", title.value);
+    formData.append("document", file.files[0]);
+
+    axios
+        .post("http://localhost:4000/api/docs", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        .then(function (response) {
+            console.log(response);
+            newdocForm.reset();
+            newdocModal.querySelector(".btn-close").click();
+            setAlert(successMsg, response.data.message, () => {
+                setTimeout(() => {
+                    removeAlert([successMsg]);
+                }, 3000);
+            });
+        })
+        .catch(function (error) {
+            console.log(error.response);
+            newdocForm.reset();
+            newdocModal.querySelector(".btn-close").click();
+            setAlert(errorMsg, error.response.data.message, () => {
+                setTimeout(() => {
+                    removeAlert([errorMsg]);
+                }, 3000);
+            });
+        });
 });

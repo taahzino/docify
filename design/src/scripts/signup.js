@@ -1,29 +1,11 @@
 import "../signup.html";
 import "./global";
 import axios from "axios";
+import { setAlert, removeAlert } from "./alerts";
 
 const signupForm = document.querySelector("#signupForm");
 const errorMsg = document.querySelector("#errorMsg");
 const successMsg = document.querySelector("#successMsg");
-
-const setAlert = (alert, msg, callback) => {
-    alert.style.display = "block";
-    if (alert == errorMsg) {
-        alert.innerHTML = "<b>Error: </b>" + msg;
-    } else {
-        alert.innerHTML = "<b>Success: </b>" + msg;
-    }
-
-    if (callback) {
-        callback();
-    }
-};
-
-const removeAlert = (alerts) => {
-    alerts.forEach((alert) => {
-        alert.style.display = "none";
-    });
-};
 
 const sendRequest = (data) => {
     axios

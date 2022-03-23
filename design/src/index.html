@@ -22,12 +22,14 @@
                 </div>
             </div>
             <hr>
+            <div class="alert alert-danger" id="errorMsg" style="display: none;"></div>
+            <div class="alert alert-success" id="successMsg" style="display: none;"></div>
             <div class="d-none" id="nodocmsg">No document uploaded yet</div>
-            <div class="row p-2">
+            <div class="row p-2 gallery_container">
                 <div class="col-sm-12 col-md-4 col-lg-3 p-3 gallery_item" id="doc_555555">
                     <div class="border rounded p-1">
                         <div class="image_container">
-                            <img src="./images/nid_sample.jpg" alt="" class="img-fluid rounded">
+                            <img src="./images/nid_sample.jpg" alt="Smart NID Card" class="img-fluid rounded">
                         </div>
                         <h5 class="doc_title">Smart NID Card</h5>
                         <div class="actions my-2 d-flex align-items-center justify-content-between">
@@ -110,14 +112,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="" enctype="multipart/form-data" method="post" id="newdocForm">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" required>
+                            <input type="text" class="form-control" id="title" name="newdoc_title" required>
                         </div>
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Select file</label>
-                            <input class="form-control" type="file" id="formFile" required>
+                            <input class="form-control" name="newdoc_file" type="file" id="formFile" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
