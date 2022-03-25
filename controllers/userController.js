@@ -106,7 +106,7 @@ const loginUser = asyncHanlder(async (req, res) => {
 
         const token = generateToken(res.locals.user);
 
-        res.cookie(process.env.APP_NAME, token, {
+        res.cookie(process.env.LOGIN_COOKIE_NAME, token, {
             maxAge: process.env.JWT_EXPIRY_TIME,
             httpOnly: true,
             signed: true,
@@ -218,4 +218,16 @@ const updateMe = asyncHanlder(async (req, res) => {
     });
 });
 
-module.exports = { registerUser, loginUser, getMe, updateMe };
+const logout = asyncHanlder(async (req, res) => {
+    res.cookie(process.env.LOGIN_COOKIE_NAME, {}, {
+        maxAge: 0,
+        httpOnly: true,
+        signed: true,
+    });
+
+    res.status(201).json({
+        message: "Logged out successfully!",
+    });
+});
+
+module.exports = { registerUser, loginUser, logout, getMe, updateMe };

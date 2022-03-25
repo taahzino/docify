@@ -8,7 +8,7 @@ const User = require("../models/userModel");
 
 // Functions
 const authGuard = asyncHandler(async (req, res, next) => {
-    let token = req.signedCookies[process.env.APP_NAME] || false;
+    let token = req.signedCookies[process.env.LOGIN_COOKIE_NAME] || false;
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);

@@ -5,6 +5,7 @@ const express = require("express");
 const {
     registerUser,
     loginUser,
+    logout,
     getMe,
     updateMe
 } = require("../controllers/userController");
@@ -16,6 +17,7 @@ const router = express.Router();
 // Request Handling
 router.post("/", registerUser);
 router.post("/login", loginUser);
+router.post("/logout", logout);
 router.get("/me", authGuard, getMe);
 router.put("/me", authGuard, updateMe);
 
