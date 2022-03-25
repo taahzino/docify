@@ -52,12 +52,6 @@ galleryItems.forEach((item) => {
     });
 
     deleteButton.addEventListener("click", () => {
-        // const confirmDeletation = confirm(
-        //     `Do you really want to delete ${docTitle}`
-        // );
-        // if (confirmDeletation) {
-        //     deleteItem(item.getAttribute("id"));
-        // }
         Fnon.Ask.Danger(
             `Do you really want to delete <b>${docTitle}</b>? <br> <img src="${src}" height="100" class="rounded">`,
             "Confirmation",

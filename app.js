@@ -3,6 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const colors = require("colors");
 const cors = require("cors");
+const path = require("path");
 const cookieParser = require('cookie-parser');
 
 // Configure dotenv
@@ -24,7 +25,7 @@ const app = express();
 // Middlewares
 app.use(
     cors({
-        origin: ["http://localhost:8080"],
+        origin: ["http://localhost:8080", "http://localhost:3000", "http://localhost:3000"],
         optionsSuccessStatus: 200,
     })
 );
@@ -35,6 +36,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // Routes
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/docs", require("./routes/docRoutes"));
+app.use("/", express.static(path.join(__dirname, "./client/build/")));
+app.use("/:anything", express.static(path.join(__dirname, "./client/build/")));
 app.use(errorHandler);
 
 // Start the app
