@@ -5,17 +5,34 @@ import AlertComponent from "./Alert";
 import Gallery from "./Gallery";
 import ProfileModal from "./ProfileModal";
 import NewDocModal from "./NewDocModal";
-import { useHistory } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useAxios } from "../hooks/useAxios";
+import { useEffect } from "react";
 
 const DashboardPage = () => {
     const [showProfile, setShowProfile] = useState(false);
     const [showNewDocModal, setShowNewDocModal] = useState(false);
 
-    const history = useHistory();
+    const [shouldLogout, setShouldLogout] = useState(false);
+
+    const { logout, Authorization } = useAuth();
 
     const logoutHandler = () => {
-        history.push("/login");
+        setShouldLogout(true);
     };
+
+    useEffect(() => {
+        (async () => {
+            if (shouldLogout) {
+                await useAxios("post", "/api/users/logout", {}, Authorization);
+                logout();
+            }
+        })();
+
+        return () => {
+            setShouldLogout(false);
+        };
+    }, [shouldLogout]);
 
     return (
         <>

@@ -10,7 +10,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
-    const [cookies, setCookie] = useCookies();
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     const Authorization = `Bearer ${cookies["token"]}`;
 
@@ -85,6 +85,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const logout = () => {
+        removeCookie("token");
+        removeCookie("Docify");
+        setCurrentUser(null);
+    };
+
     const signup = async ({ name, email, phone, password, password2 }) => {
         try {
             const response = await axios.post(
@@ -112,7 +118,15 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const value = { signup, login, getMe, Authorization, currentUser };
+    const value = {
+        signup,
+        login,
+        logout,
+        getMe,
+        Authorization,
+        currentUser,
+        setCurrentUser
+    };
 
     useEffect(() => {
         (async () => {
