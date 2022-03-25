@@ -5,7 +5,7 @@ const AlertComponent = ({ show, variant, children, ...props }) => {
     return (
         <>
             {show && (
-                <Alert variant={variant} props>
+                <Alert variant={variant} {...props}>
                     {children}
                 </Alert>
             )}

@@ -1,22 +1,105 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "../styles/FormCard.module.css";
 import { Button, Container, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import AlertComponent from "./Alert";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [showError, setShowError] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    const [filledUp, setFilledUp] = useState();
+
+    const history = useHistory();
+
+    const { login } = useAuth();
+
+    const submitHandler = e => {
+        e.preventDefault();
+        setFilledUp(false);
+        setShowError(false);
+        setShowSuccess(false);
+        setErrorMessage("");
+        setSuccessMessage("");
+
+        if (!email || !password) {
+            setShowError(true);
+            setErrorMessage("All fields are required!");
+            return;
+        }
+
+        setFilledUp(true);
+    };
+
+    useEffect(() => {
+        (async () => {
+            if (filledUp) {
+                try {
+                    const result = await login({
+                        email,
+                        password
+                    });
+
+                    if (result.type === "error") {
+                        setShowError(true);
+                        setErrorMessage(result.data.message);
+                        setFilledUp(false);
+                    } else {
+                        setShowSuccess(true);
+                        setSuccessMessage(result.data.message);
+
+                        setTimeout(() => {
+                            setShowSuccess(false);
+                            setSuccessMessage(null);
+                            history.push("/");
+                        }, 1000);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        })();
+
+        return () => {
+            setFilledUp(false);
+        };
+    }, [filledUp]);
+
     return (
         <>
             <Container className="my-2 rounded d-flex align-items-center justify-content-center">
-                <Form className={`${classes.formCard} bg-white p-4 rounded`}>
-                    <h2 class="text-center">Docify</h2>
-                    <p class="text-center">An address for your documents</p>
+                <Form
+                    className={`${classes.formCard} bg-white p-4 rounded`}
+                    onSubmit={submitHandler}
+                >
+                    <h2 className="text-center">Docify</h2>
+                    <p className="text-center">An address for your documents</p>
                     <hr />
+
+                    <AlertComponent variant="danger" show={showError}>
+                        {errorMessage}
+                    </AlertComponent>
+                    <AlertComponent variant="success" show={showSuccess}>
+                        {successMessage}
+                    </AlertComponent>
+
                     <h4>Login</h4>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email</Form.Label>
                         <Form.Control
                             type="email"
                             placeholder="Enter your email"
+                            value={email}
+                            onChange={e => {
+                                setEmail(e.target.value);
+                            }}
                         />
                     </Form.Group>
 
@@ -25,6 +108,10 @@ const LoginPage = () => {
                         <Form.Control
                             type="password"
                             placeholder="Enter your password"
+                            value={password}
+                            onChange={e => {
+                                setPassword(e.target.value);
+                            }}
                         />
                     </Form.Group>
 

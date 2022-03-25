@@ -25,7 +25,6 @@ const GalleryItem = ({ thumbnail, title }) => {
                             alt={title}
                             className={`img-fluid rounded ${classes.thumbnail}`}
                             onClick={() => {
-                                console.log(132);
                                 openModal(thumbnail, title);
                             }}
                         />
