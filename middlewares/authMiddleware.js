@@ -8,62 +8,35 @@ const User = require("../models/userModel");
 
 // Functions
 const authGuard = asyncHandler(async (req, res, next) => {
-    let token = req.signedCookies[process.env.LOGIN_COOKIE_NAME] || false;
-    if (token) {
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    try {
+        const SERVER_TOKEN =
+            req.signedCookies[process.env.LOGIN_COOKIE_NAME] || false;
 
-            const doc = await User.findById(decoded._id);
-
-            const user = lodash.cloneDeep(doc.toObject());
-
-            user.password = undefined;
-
-            res.locals.user = user;
-
-            next();
-        } catch (err) {
-            res.status(401).json({
-                errors: {
-                    common: { msg: "Authentication failure!" },
-                },
-            });
-        }
-    } else {
-        if (
+        const CLIENT_TOKEN =
             req.headers.authorization &&
             req.headers.authorization.startsWith("Bearer")
-        ) {
-            try {
-                token = req.headers.authorization.split(" ")[1];
+                ? req.headers.authorization.split(" ")[1]
+                : false;
 
-                const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const JWT = SERVER_TOKEN || CLIENT_TOKEN;
 
-                const doc = await User.findById(decoded._id).select(
-                    "-password"
-                );
+        const decoded = jwt.verify(JWT, process.env.JWT_SECRET_KEY);
 
-                const user = lodash.cloneDeep(doc.toObject());
+        const doc = await User.findById(decoded._id).select("-password");
 
-                user.password = undefined;
+        const user = lodash.cloneDeep(doc.toObject());
 
-                res.locals.user = user;
+        user.password = undefined;
 
-                next();
-            } catch (error) {
-                res.status(401).json({
-                    errors: {
-                        common: { msg: "Authentication failure!" },
-                    },
-                });
-            }
-        } else {
-            res.status(401).json({
-                errors: {
-                    common: { msg: "Authentication failure!" },
-                },
-            });
-        }
+        res.locals.user = user;
+
+        next();
+    } catch (error) {
+        res.status(401).json({
+            errors: {
+                common: { msg: "Authentication failure!" },
+            },
+        });
     }
 });
 
