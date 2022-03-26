@@ -21,7 +21,7 @@ const ProfileModal = ({ show, handleClose }) => {
 
     const [filledUp, setFilledUp] = useState();
 
-    const submitHandler = e => {
+    const submitHandler = (e) => {
         e.preventDefault();
         setFilledUp(false);
         setShowError(false);
@@ -49,12 +49,12 @@ const ProfileModal = ({ show, handleClose }) => {
             if (filledUp) {
                 const result = await useAxios(
                     "put",
-                    "/api/users/me",
+                    `${process.env.REACT_APP_SERVER_URL}/api/users/me`,
                     {
                         name: username,
                         phone,
                         password,
-                        password2
+                        password2,
                     },
                     Authorization
                 );
@@ -110,7 +110,7 @@ const ProfileModal = ({ show, handleClose }) => {
                             type="text"
                             placeholder="What should we call you now?"
                             value={username}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setUsername(e.target.value);
                             }}
                         />
@@ -122,7 +122,7 @@ const ProfileModal = ({ show, handleClose }) => {
                             type="email"
                             placeholder="You can't change your email"
                             value={email}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
                             disabled
@@ -140,7 +140,7 @@ const ProfileModal = ({ show, handleClose }) => {
                             maxLength="11"
                             placeholder="Phone number must be bangladeshi"
                             value={phone}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPhone(e.target.value);
                             }}
                         />
@@ -155,7 +155,7 @@ const ProfileModal = ({ show, handleClose }) => {
                             type="password"
                             placeholder="Enter your Password"
                             value={password}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPassword(e.target.value);
                             }}
                         />
@@ -170,7 +170,7 @@ const ProfileModal = ({ show, handleClose }) => {
                             type="password"
                             placeholder="Enter new Password"
                             value={password2}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPassword2(e.target.value);
                             }}
                         />

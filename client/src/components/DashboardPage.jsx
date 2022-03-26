@@ -24,7 +24,12 @@ const DashboardPage = () => {
     useEffect(() => {
         (async () => {
             if (shouldLogout) {
-                await useAxios("post", "/api/users/logout", {}, Authorization);
+                await useAxios(
+                    "post",
+                    `${process.env.REACT_APP_SERVER_URL}/api/users/logout`,
+                    {},
+                    Authorization
+                );
                 logout();
             }
         })();

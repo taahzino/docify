@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import Cookies from "universal-cookie";
+import { useAxios } from "../hooks/useAxios";
 
 const AuthContext = React.createContext();
 
@@ -10,84 +11,60 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
-    const [cookies, setCookie, removeCookie] = useCookies();
 
-    const Authorization = `Bearer ${cookies["token"]}`;
+    const cookies = new Cookies();
+
+    const Authorization = `Bearer ${cookies.get("token")}`;
 
     const getMe = async () => {
-        try {
-            const response = await axios.get(
-                "http://localhost:4000/api/users/me",
-                {
-                    headers: {
-                        Authorization
-                    }
-                }
-            );
+        const result = await useAxios(
+            "get",
+            `${process.env.REACT_APP_SERVER_URL}/api/users/me`,
+            {},
+            Authorization
+        );
 
-            setCurrentUser(response.data);
-
-            return {
-                type: "success",
-                status: response.status,
-                data: response.data
-            };
-        } catch (error) {
+        if (result.type === "success") {
+            setCurrentUser(result.data);
+        } else {
             setCurrentUser(null);
-            if (error.response) {
-                return {
-                    type: "error",
-                    status: error.response.status || 0,
-                    data: error.response.data || 0
-                };
-            } else {
-                return { type: "error", data: { message: error.message } };
-            }
         }
+
+        return result;
     };
 
     const login = async ({ email, password }) => {
         try {
-            const response = await axios.post(
-                "http://localhost:4000/api/users/login",
+            const result = await useAxios(
+                "post",
+                `${process.env.REACT_APP_SERVER_URL}/api/users/login`,
                 {
                     email,
-                    password
+                    password,
                 }
             );
 
-            const now = new Date();
-            let time = now.getTime();
+            const expiryTime = new Date();
+            let time = expiryTime.getTime();
             time += 86400 * 1000;
-            now.setTime(time);
+            expiryTime.setTime(time);
 
-            setCookie("token", response.data.token, {
-                expire: now.toUTCString(),
-                path: "/"
-            });
+            document.cookie = `token=${result.data.token}; expires=${expiryTime}; path=/`;
 
-            const user = { ...response.data };
+            const user = { ...result.data };
             delete user.message;
 
             setCurrentUser(user);
 
-            return {
-                type: "success",
-                status: response.status,
-                data: response.data
-            };
+            return result;
         } catch (error) {
-            return {
-                type: "error",
-                status: error.response.status,
-                data: error.response.data
-            };
+            console.log(error);
         }
     };
 
     const logout = () => {
-        removeCookie("token");
-        removeCookie("Docify");
+        cookies.remove("token");
+        cookies.remove("Docify");
         setCurrentUser(null);
     };
 
@@ -100,20 +77,20 @@ export const AuthProvider = ({ children }) => {
                     email,
                     phone,
                     password,
-                    password2
+                    password2,
                 }
             );
 
             return {
                 type: "success",
                 status: response.status,
-                data: response.data
+                data: response.data,
             };
         } catch (error) {
             return {
                 type: "error",
                 status: error.response.status,
-                data: error.response.data
+                data: error.response.data,
             };
         }
     };
@@ -125,7 +102,7 @@ export const AuthProvider = ({ children }) => {
         getMe,
         Authorization,
         currentUser,
-        setCurrentUser
+        setCurrentUser,
     };
 
     useEffect(() => {
