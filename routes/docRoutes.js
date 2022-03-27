@@ -29,22 +29,28 @@ var upload = multer({
 const router = express.Router();
 
 // Request Handling
-router.post("/", (req, res) => {
-    upload.single("document")(req, res, (err) => {
-        if (err) {
-            return res.status(400).send({ message: err.message });
-        }
+router.post("/", authGuard, (req, res) => {
+    try {
+        upload.single("document")(req, res, (err) => {
+            if (err) {
+                console.log(err)
+                return res.status(400).send({ message: err.message });
+            }
 
-        const file = req.file;
-        res.status(200).send({
-            filename: file.filename,
-            mimetype: file.mimetype,
-            originalname: file.originalname,
-            size: file.size,
-            fieldname: file.fieldname,
-            message: 'Your file has been uploaded',
+            const file = req.file;
+            res.status(200).send({
+                filename: file.filename,
+                mimetype: file.mimetype,
+                originalname: file.originalname,
+                size: file.size,
+                fieldname: file.fieldname,
+                message: "Your file has been uploaded",
+            });
         });
-    });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send({ message: err.message });
+    }
 });
 
 // Export the router
