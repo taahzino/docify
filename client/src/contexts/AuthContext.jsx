@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async ({ email, password }) => {
+        console.log({ email, password });
         try {
             const result = await useAxios(
                 "post",
@@ -54,10 +55,13 @@ export const AuthProvider = ({ children }) => {
             const user = { ...result.data };
             delete user.message;
 
-            setCurrentUser(user);
+            if (user && user._id && user.email) {
+                setCurrentUser(user);
+            }
 
             return result;
         } catch (error) {
+            console.log(54445);
             console.log(error);
         }
     };
