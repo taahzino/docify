@@ -32,11 +32,8 @@ const authGuard = asyncHandler(async (req, res, next) => {
 
         next();
     } catch (error) {
-        res.status(401).json({
-            errors: {
-                common: { msg: "Authentication failure!" },
-            },
-        });
+        res.status(401);
+        throw new Error('Authentication falure');
     }
 });
 
