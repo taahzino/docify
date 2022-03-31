@@ -104,16 +104,10 @@ const loginUser = asyncHanlder(async (req, res) => {
             phone: user.phone,
         };
 
-        const token = generateToken(res.locals.user);
-
-        res.cookie(process.env.LOGIN_COOKIE_NAME, token, {
-            maxAge: process.env.JWT_EXPIRY_TIME,
-            httpOnly: true,
-            signed: true,
-        });
+        const token = generateToken(res);
 
         res.status(201).json({
-            ...res.locals.user,
+            user: res.locals.user,
             token,
             message: "Logged in successfully!",
         });
@@ -127,7 +121,10 @@ const loginUser = asyncHanlder(async (req, res) => {
 // @route GET /api/users/me
 // @access Private
 const getMe = asyncHanlder(async (req, res) => {
-    res.json(res.locals.user);
+    res.json({
+        user: res.locals.user,
+        token: res.locals.token,
+    });
 });
 
 // @desc Update user data
@@ -219,11 +216,15 @@ const updateMe = asyncHanlder(async (req, res) => {
 });
 
 const logout = asyncHanlder(async (req, res) => {
-    res.cookie(process.env.LOGIN_COOKIE_NAME, {}, {
-        maxAge: 0,
-        httpOnly: true,
-        signed: true,
-    });
+    res.cookie(
+        process.env.LOGIN_COOKIE_NAME,
+        {},
+        {
+            maxAge: 0,
+            httpOnly: true,
+            signed: true,
+        }
+    );
 
     res.status(201).json({
         message: "Logged out successfully!",

@@ -5,6 +5,7 @@ const asyncHandler = require("express-async-handler");
 
 // Modules
 const User = require("../models/userModel");
+const generateToken = require("../utils/generateToken");
 
 // Functions
 const authGuard = asyncHandler(async (req, res, next) => {
@@ -30,10 +31,21 @@ const authGuard = asyncHandler(async (req, res, next) => {
 
         res.locals.user = user;
 
+        const exp = parseInt(decoded.exp.toString() + "000");
+
+        const remaining = parseInt((exp - Date.now()) / (1000 * 86400));
+
+        if (remaining <= 15) {
+            const newToken = generateToken(res);
+            res.locals.token = newToken;
+        } else {
+            res.locals.token = JWT;
+        }
+
         next();
     } catch (error) {
         res.status(401);
-        throw new Error('Authentication falure');
+        throw new Error("Authentication falure");
     }
 });
 
