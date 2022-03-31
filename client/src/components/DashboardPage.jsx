@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container } from "react-bootstrap";
 import classes from "../styles/Dashboard.module.css";
 import AlertComponent from "./Alert";
@@ -6,8 +6,7 @@ import Gallery from "./Gallery";
 import ProfileModal from "./ProfileModal";
 import NewDocModal from "./NewDocModal";
 import { useAuth } from "../contexts/AuthContext";
-import { useAxios } from "../hooks/useAxios";
-import { useEffect } from "react";
+import { useXhr } from "../hooks/useXhr";
 
 const DashboardPage = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -15,29 +14,27 @@ const DashboardPage = () => {
 
     const [shouldLogout, setShouldLogout] = useState(false);
 
-    const { logout, Authorization } = useAuth();
+    const { logout } = useAuth();
 
     const logoutHandler = () => {
         setShouldLogout(true);
     };
 
+    const logoutResult = useXhr(
+        shouldLogout,
+        "post",
+        `${process.env.REACT_APP_SERVER_URL}/api/users/logout`
+    );
+
     useEffect(() => {
-        (async () => {
-            if (shouldLogout) {
-                await useAxios(
-                    "post",
-                    `${process.env.REACT_APP_SERVER_URL}/api/users/logout`,
-                    {},
-                    Authorization
-                );
-                logout();
-            }
-        })();
+        if (logoutResult.status === 201) {
+            logout();
+        }
 
         return () => {
             setShouldLogout(false);
         };
-    }, [shouldLogout]);
+    }, [logoutResult]);
 
     return (
         <>

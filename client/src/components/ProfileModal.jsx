@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
 import AlertComponent from "./Alert";
-import { useAxios } from "../hooks/useAxios";
+import { useAuth } from "../contexts/AuthContext";
+import { useXhr } from "../hooks/useXhr";
 
 const ProfileModal = ({ show, handleClose }) => {
     const [username, setUsername] = useState("");
@@ -11,32 +11,37 @@ const ProfileModal = ({ show, handleClose }) => {
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
 
-    const [showError, setShowError] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
+    const [errorMsg, setErrorMsg] = useState();
+    const [successMsg, setSuccessMsg] = useState();
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const { currentUser, setCurrentUser } = useAuth();
 
-    const { currentUser, setCurrentUser, Authorization } = useAuth();
-
-    const [filledUp, setFilledUp] = useState();
+    const [shouldUpdate, setShouldUpdate] = useState(false);
 
     const submitHandler = (e) => {
         e.preventDefault();
-        setFilledUp(false);
-        setShowError(false);
-        setShowSuccess(false);
-        setErrorMessage("");
-        setSuccessMessage("");
+        setErrorMsg("");
+        setSuccessMsg("");
 
         if (password.trim().length === 0) {
-            setShowError(true);
-            setErrorMessage("Password is required to make any change!");
+            setErrorMsg("Password is required to make any change!");
             return;
         }
 
-        setFilledUp(true);
+        setShouldUpdate(true);
     };
+
+    const result = useXhr(
+        shouldUpdate,
+        "put",
+        `${process.env.REACT_APP_SERVER_URL}/api/users/me`,
+        {
+            name: username,
+            phone,
+            password,
+            password2,
+        }
+    );
 
     useEffect(() => {
         setUsername(currentUser.name);
@@ -45,47 +50,31 @@ const ProfileModal = ({ show, handleClose }) => {
     }, [currentUser]);
 
     useEffect(() => {
-        (async () => {
-            if (filledUp) {
-                const result = await useAxios(
-                    "put",
-                    `${process.env.REACT_APP_SERVER_URL}/api/users/me`,
-                    {
-                        name: username,
-                        phone,
-                        password,
-                        password2,
-                    },
-                    Authorization
-                );
+        if (result) {
+            setShouldUpdate(false);
 
-                if (result.type === "error") {
-                    setShowError(true);
-                    setErrorMessage(result.data.message);
-                    setFilledUp(false);
-                } else {
-                    setShowSuccess(true);
-                    setSuccessMessage(result.data.message);
+            if (result.type === "error") {
+                setErrorMsg(result.data.message);
+            } else {
+                setSuccessMsg(result.data.message);
 
-                    delete result.data.message;
+                delete result.data.message;
 
-                    setCurrentUser(result.data);
+                setCurrentUser(result.data);
 
-                    setPassword("");
-                    setPassword2("");
+                setPassword("");
+                setPassword2("");
 
-                    setTimeout(() => {
-                        setShowSuccess(false);
-                        setSuccessMessage(null);
-                    }, 3000);
-                }
+                setTimeout(() => {
+                    setSuccessMsg();
+                }, 3000);
             }
-        })();
+        }
 
         return () => {
-            setFilledUp(false);
+            setShouldUpdate(false);
         };
-    }, [filledUp]);
+    }, [result]);
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -95,13 +84,13 @@ const ProfileModal = ({ show, handleClose }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={submitHandler}>
-                    <AlertComponent variant="danger" show={showError}>
-                        {errorMessage}
+                <form onSubmit={submitHandler}>
+                    <AlertComponent variant="danger" show={errorMsg}>
+                        {errorMsg}
                     </AlertComponent>
 
-                    <AlertComponent variant="success" show={showSuccess}>
-                        {successMessage}
+                    <AlertComponent variant="success" show={successMsg}>
+                        {successMsg}
                     </AlertComponent>
 
                     <Form.Group className="mb-3" controlId="formBasicName">
@@ -180,10 +169,14 @@ const ProfileModal = ({ show, handleClose }) => {
                         </Form.Text>
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={submitHandler}
+                    >
                         Update Account
                     </Button>
-                </Form>
+                </form>
             </Modal.Body>
         </Modal>
     );
