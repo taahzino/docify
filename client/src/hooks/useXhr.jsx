@@ -26,7 +26,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                         }
                     })
                     .catch((error) => {
-                        setResult({ type: "error", ...error });
+                        setResult({ type: "error", ...error.response });
                         if (error.response.status === 401) {
                             setTimeout(() => {
                                 logout();
@@ -52,13 +52,12 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                         }
                     })
                     .catch((error) => {
-                        const response = error.response;
-                        if (response.status === 401) {
+                        if (error.response.status === 401) {
                             setTimeout(() => {
                                 logout();
                             }, 3000);
                         }
-                        setResult({ type: "error", ...response });
+                        setResult({ type: "error", ...error.response });
                     })
                     .then(() => {
                         setIsFetched(true);
