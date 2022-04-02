@@ -2,6 +2,7 @@ const { uploader } = require("../utils/uploader");
 
 const Doc = require("../models/docModel");
 const path = require("path");
+const fs = require("fs");
 
 const getAllDocs = async (req, res) => {
     try {
@@ -50,11 +51,25 @@ const getADoc = async (req, res) => {
     );
 };
 
-const downloadADoc = async (req, res) => {
+const downloadADoc = (req, res) => {
     res.status(200).download(
         path.join(__dirname, "../uploads/" + res.locals.doc.filename),
-        `${res.locals.doc.title.split(' ').join('-')}.${res.locals.doc.mimetype.split('/')[1]}`
+        `${res.locals.doc.title.split(" ").join("-")}.${
+            res.locals.doc.mimetype.split("/")[1]
+        }`
     );
 };
 
-module.exports = { saveDoc, getAllDocs, getADoc, downloadADoc };
+const deleteADoc = async (req, res) => {
+    await Doc.findByIdAndDelete(res.locals.doc._id);
+
+    fs.unlinkSync(
+        path.join(__dirname, "../uploads/" + res.locals.doc.filename)
+    );
+
+    res.status(200).json({
+        message: "Document deleted successfully",
+    });
+};
+
+module.exports = { saveDoc, getAllDocs, getADoc, downloadADoc, deleteADoc };
