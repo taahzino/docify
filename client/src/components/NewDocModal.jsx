@@ -4,18 +4,19 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import AlertComponent from "./Alert";
 import axios from "axios";
+import { useDocs } from "../contexts/DocsContext";
 
 const NewDocModal = ({ show, handleClose: hideModal }) => {
     const [title, setTitle] = useState("");
     const [file, setFile] = useState();
     const [shouldRequest, setShouldRequest] = useState(false);
 
-    const [showError, setShowError] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
     const { Authorization } = useAuth();
+
+    const { dispatchDocs } = useDocs();
 
     const handleClose = () => {
         setTitle("");
@@ -26,11 +27,9 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         setShouldRequest(false);
-        setShowError(false);
         setErrorMessage("");
 
         if (!title || !file) {
-            setShowError(true);
             setErrorMessage("Please give a title and select a file");
         } else {
             setShouldRequest(true);
@@ -52,20 +51,19 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
                         },
                     })
                     .then(function (response) {
-                        console.log(response);
-                        setShowSuccess(true);
                         setSuccessMessage(response.data.message);
                         setTitle("");
                         setFile(null);
                         setTimeout(() => {
-                            setShowSuccess(false);
                             setSuccessMessage(null);
                             handleClose();
-                        }, 1000);
+                            dispatchDocs({
+                                type: "create",
+                                doc: response.data.doc,
+                            });
+                        }, 300);
                     })
                     .catch(function (error) {
-                        console.log(error.response);
-                        setShowError(true);
                         setErrorMessage(error.response.data.message);
                         if (error.response.status === 401) {
                             window.location.href = "/";
@@ -80,19 +78,19 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
     }, [shouldRequest]);
 
     return (
-        <Modal show={show} onHide={handleClose} onSubmit={submitHandler}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
                     <h5>Add new document</h5>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                    <AlertComponent variant="danger" show={showError}>
+                <Form onSubmit={submitHandler}>
+                    <AlertComponent variant="danger" show={errorMessage}>
                         {errorMessage}
                     </AlertComponent>
 
-                    <AlertComponent variant="success" show={showSuccess}>
+                    <AlertComponent variant="success" show={successMessage}>
                         {successMessage}
                     </AlertComponent>
                     <Form.Group className="mb-3" controlId="formBasicTitle">
@@ -117,7 +115,7 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
-                        Update
+                        Upload
                     </Button>
                 </Form>
             </Modal.Body>
