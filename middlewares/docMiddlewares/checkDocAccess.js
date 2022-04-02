@@ -10,6 +10,11 @@ const checkDocAccess = asyncHandler(async (req, res, next) => {
     }
     const doc = await Doc.findById(req.params.id);
 
+    if (!doc) {
+        res.status(404);
+        throw new Error("Document not found!");
+    }
+
     if (doc.user.toString() !== res.locals.user._id.toString()) {
         res.status(403);
         throw new Error(
