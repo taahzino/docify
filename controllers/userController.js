@@ -5,7 +5,6 @@ const asyncHanlder = require("express-async-handler");
 // Modules
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
-const { authGuard } = require("../middlewares/authMiddleware");
 
 // @desc Register new User
 // @route POST /api/users
@@ -215,6 +214,9 @@ const updateMe = asyncHanlder(async (req, res) => {
     });
 });
 
+// @desc Logout loggedin user
+// @route POST /api/users/logout
+// @access Private
 const logout = asyncHanlder(async (req, res) => {
     res.cookie(
         process.env.LOGIN_COOKIE_NAME,
