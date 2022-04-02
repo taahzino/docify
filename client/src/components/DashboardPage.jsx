@@ -7,6 +7,7 @@ import ProfileModal from "./ProfileModal";
 import NewDocModal from "./NewDocModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useXhr } from "../hooks/useXhr";
+import { useDocs } from "../contexts/DocsContext";
 
 const DashboardPage = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -14,7 +15,11 @@ const DashboardPage = () => {
 
     const [shouldLogout, setShouldLogout] = useState(false);
 
+    const [shouldGetDocs, setShouldGetDocs] = useState(false);
+
     const { logout } = useAuth();
+
+    const { docs, dispatchDocs } = useDocs();
 
     const logoutHandler = () => {
         setShouldLogout(true);
@@ -26,8 +31,14 @@ const DashboardPage = () => {
         `${process.env.REACT_APP_SERVER_URL}/api/users/logout`
     );
 
+    const getAllDocs = useXhr(
+        shouldGetDocs,
+        "get",
+        `${process.env.REACT_APP_SERVER_URL}/api/docs/`
+    );
+
     useEffect(() => {
-        if (logoutResult.status === 201) {
+        if (logoutResult && logoutResult.type === "success") {
             logout();
         }
 
@@ -35,6 +46,33 @@ const DashboardPage = () => {
             setShouldLogout(false);
         };
     }, [logoutResult]);
+
+    useEffect(() => {
+        if (getAllDocs && getAllDocs.type === "success") {
+            let payload = getAllDocs.data.docs;
+            console.log(payload);
+            if (getAllDocs.data.docs.length > 0) {
+                dispatchDocs({
+                    type: "load",
+                    payload,
+                });
+            }
+
+            setShouldGetDocs(false);
+        }
+    }, [getAllDocs]);
+
+    useEffect(() => {
+        console.dir(docs);
+    }, [docs]);
+
+    useEffect(() => {
+        setShouldGetDocs(true);
+
+        return () => {
+            setShouldGetDocs(false);
+        };
+    }, []);
 
     return (
         <>
@@ -76,16 +114,13 @@ const DashboardPage = () => {
                         </div>
                     </div>
                     <hr />
-                    <AlertComponent variant="danger" show={false}>
-                        Error
-                    </AlertComponent>
-                    <AlertComponent variant="success" show={false}>
-                        Success
-                    </AlertComponent>
-                    <AlertComponent variant="secondary" show={false}>
+                    <AlertComponent
+                        variant="secondary"
+                        show={docs && docs.length < 1}
+                    >
                         No document uploaded yet
                     </AlertComponent>
-                    <Gallery />
+                    <Gallery docs={docs} />
                 </Container>
             </Container>
             <ProfileModal
