@@ -8,7 +8,7 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
 import { useXhr } from "./hooks/useXhr.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
-import { setToken } from "./utils/setToken";
+import { DocsProvider } from "./contexts/DocsContext.jsx";
 
 const App = () => {
     const { setCurrentUser } = useAuth();
@@ -35,15 +35,25 @@ const App = () => {
     }, [profileRequest]);
 
     return (
-        <Router>
-            <Layout>
-                <Switch>
-                    <PrivateRoute exact path="/" component={DashboardPage} />
-                    <GuestRoute exact path="/login" component={LoginPage} />
-                    <GuestRoute exact path="/signup" component={SignupPage} />
-                </Switch>
-            </Layout>
-        </Router>
+        <DocsProvider>
+            <Router>
+                <Layout>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/"
+                            component={DashboardPage}
+                        />
+                        <GuestRoute exact path="/login" component={LoginPage} />
+                        <GuestRoute
+                            exact
+                            path="/signup"
+                            component={SignupPage}
+                        />
+                    </Switch>
+                </Layout>
+            </Router>
+        </DocsProvider>
     );
 };
 
