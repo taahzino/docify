@@ -34,6 +34,7 @@ const GalleryItem = ({ docId, title }) => {
                     </div>
                     <h5>{title}</h5>
                     <Actions
+                        docId={docId}
                         thumbnail={thumbnail}
                         title={title}
                         download={download}

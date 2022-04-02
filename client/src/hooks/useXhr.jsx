@@ -11,7 +11,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
 
     useEffect(() => {
         if (shouldRequest) {
-            if (method === "get") {
+            if (method === "get" || method === "delete") {
                 axios[method](url, {
                     headers: { Authorization },
                 })

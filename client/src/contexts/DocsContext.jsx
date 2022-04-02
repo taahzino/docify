@@ -14,6 +14,11 @@ const reducer = (state, action) => {
             return [...state, ...action.payload];
         case "create":
             return [...state, action.doc];
+        case "delete":
+            // return [...state, action.docId];
+            return state.filter(
+                (doc) => doc._id.toString() !== action.docId.toString()
+            );
         default:
             return state;
     }

@@ -4,7 +4,7 @@ import DeleteDocModal from "./DeleteDocModal";
 import EditDocModal from "./EditDocModal";
 import MailDocModal from "./MailDocModal";
 
-const Actions = ({ thumbnail, download, title }) => {
+const Actions = ({ thumbnail, download, title, docId }) => {
     const [showDeleteDocModal, setShowDeleteDocModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showMailModal, setShowMailModal] = useState(false);
@@ -55,6 +55,7 @@ const Actions = ({ thumbnail, download, title }) => {
                 }}
             />
             <DeleteDocModal
+                docId={docId}
                 show={showDeleteDocModal}
                 title={title}
                 thumbnail={thumbnail}
