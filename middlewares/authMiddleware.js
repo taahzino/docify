@@ -19,7 +19,9 @@ const authGuard = asyncHandler(async (req, res, next) => {
                 ? req.headers.authorization.split(" ")[1]
                 : false;
 
-        const JWT = SERVER_TOKEN || CLIENT_TOKEN;
+        const COOKIE_TOKEN = req.cookies.token;
+
+        const JWT = SERVER_TOKEN || CLIENT_TOKEN || COOKIE_TOKEN;
 
         const decoded = jwt.verify(JWT, process.env.JWT_SECRET_KEY);
 
