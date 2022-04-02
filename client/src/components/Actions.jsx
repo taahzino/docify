@@ -4,7 +4,7 @@ import DeleteDocModal from "./DeleteDocModal";
 import EditDocModal from "./EditDocModal";
 import MailDocModal from "./MailDocModal";
 
-const Actions = ({ thumbnail, title }) => {
+const Actions = ({ thumbnail, download, title }) => {
     const [showDeleteDocModal, setShowDeleteDocModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showMailModal, setShowMailModal] = useState(false);
@@ -20,7 +20,7 @@ const Actions = ({ thumbnail, title }) => {
     return (
         <>
             <div className="d-flex justify-content-between">
-                <a href={thumbnail} download>
+                <a href={download}>
                     <Button variant="primary">
                         <i className="bi bi-download"></i>
                     </Button>

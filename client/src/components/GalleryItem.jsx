@@ -4,10 +4,13 @@ import classes from "../styles/Thumbnail.module.css";
 import Actions from "./Actions";
 import { Lightbox } from "react-modal-image";
 
-const GalleryItem = ({ thumbnail, title }) => {
+const GalleryItem = ({ docId, title }) => {
     const [showModal, setShowModal] = useState();
     const [modalSrc, setModalSrc] = useState();
     const [modalTitle, setModalTitle] = useState();
+
+    const thumbnail = `${process.env.REACT_APP_SERVER_URL}/api/docs/${docId}`;
+    const download = `${process.env.REACT_APP_SERVER_URL}/api/docs/download/${docId}`;
 
     const openModal = (thumbnail, title) => {
         setShowModal(true);
@@ -30,7 +33,11 @@ const GalleryItem = ({ thumbnail, title }) => {
                         />
                     </div>
                     <h5>{title}</h5>
-                    <Actions thumbnail={thumbnail} title={title} />
+                    <Actions
+                        thumbnail={thumbnail}
+                        title={title}
+                        download={download}
+                    />
                 </div>
             </Col>
             {showModal && (
@@ -38,6 +45,7 @@ const GalleryItem = ({ thumbnail, title }) => {
                     medium={modalSrc}
                     alt={modalTitle}
                     showRotate
+                    downloadLink={download}
                     onClose={() => {
                         setShowModal(false);
                     }}
