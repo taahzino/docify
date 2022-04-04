@@ -1,7 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useDocs } from "../contexts/DocsContext";
+import { useXhr } from "../hooks/useXhr";
+import AlertComponent from "./Alert";
 
-const EditDocModal = ({ show, handleClose, title, id }) => {
+const EditDocModal = ({ show, handleClose, title, docId }) => {
+    const [shouldUpdate, setShouldUpdate] = useState(false);
+    const [newTitle, setNewTitle] = useState(title);
+
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    const { dispatchDocs } = useDocs();
+
+    const updateResult = useXhr(
+        shouldUpdate,
+        "put",
+        `${process.env.REACT_APP_SERVER_URL}/api/docs/${docId}`,
+        {
+            title: newTitle,
+        }
+    );
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        setErrorMessage("");
+        setSuccessMessage("");
+        if (title.trim() === newTitle.trim()) {
+            return setErrorMessage("Nothing to update");
+        }
+        setShouldUpdate(true);
+    };
+
+    useEffect(() => {
+        if (updateResult) {
+            if (updateResult.type === "success") {
+                setSuccessMessage(updateResult.data.message);
+                setTimeout(() => {
+                    handleClose();
+                    dispatchDocs({
+                        type: "update",
+                        payload: updateResult.data.doc,
+                    });
+                }, 300);
+            } else {
+                setErrorMessage(updateResult.data.message);
+            }
+            setShouldUpdate(false);
+        }
+    }, [updateResult]);
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -10,11 +58,22 @@ const EditDocModal = ({ show, handleClose, title, id }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form>
+                <Form onSubmit={submitHandler}>
+                    <AlertComponent variant="danger" show={errorMessage}>
+                        {errorMessage}
+                    </AlertComponent>
+
+                    <AlertComponent variant="success" show={successMessage}>
+                        {successMessage}
+                    </AlertComponent>
                     <Form.Group className="mb-3" controlId="formBasicTitle">
                         <Form.Label>New Title</Form.Label>
                         <Form.Control
                             type="text"
+                            value={newTitle}
+                            onChange={(e) => {
+                                setNewTitle(e.target.value);
+                            }}
                             placeholder="Ex: Passport, NID..."
                         />
                     </Form.Group>

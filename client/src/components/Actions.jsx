@@ -43,6 +43,7 @@ const Actions = ({ thumbnail, download, title, docId }) => {
             <EditDocModal
                 show={showEditModal}
                 title={title}
+                docId={docId}
                 handleClose={() => {
                     setShowEditModal(false);
                 }}
