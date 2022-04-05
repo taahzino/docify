@@ -20,7 +20,7 @@ const GalleryItem = ({ docId, title }) => {
 
     return (
         <>
-            <Col sm={12} md={4} lg={3} className={`p-3`}>
+            <Col sm={12} md={6} lg={3} className={`p-3`}>
                 <div className="rounded px-3 py-1">
                     <div className={`${classes.thumbnail_container}`}>
                         <img

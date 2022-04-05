@@ -30,10 +30,9 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
         setErrorMessage("");
 
         if (!title || !file) {
-            setErrorMessage("Please give a title and select a file");
-        } else {
-            setShouldRequest(true);
+            return setErrorMessage("Please give a title and select a file");
         }
+        setShouldRequest(true);
     };
 
     useEffect(() => {
