@@ -50,7 +50,6 @@ const DashboardPage = () => {
     useEffect(() => {
         if (getAllDocs && getAllDocs.type === "success") {
             let payload = getAllDocs.data.docs;
-            console.log(payload);
             if (getAllDocs.data.docs.length > 0) {
                 dispatchDocs({
                     type: "load",
@@ -61,10 +60,6 @@ const DashboardPage = () => {
             setShouldGetDocs(false);
         }
     }, [getAllDocs]);
-
-    useEffect(() => {
-        console.dir(docs);
-    }, [docs]);
 
     useEffect(() => {
         setShouldGetDocs(true);
