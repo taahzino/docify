@@ -18,12 +18,14 @@ const updateDocValidation = require("../middlewares/docMiddlewares/updateDocVali
 const router = express.Router();
 
 // Request Handling
-router.post("/", authGuard, saveDoc);
-router.get("/", authGuard, getAllDocs);
-router.get("/:id", authGuard, checkDocAccess, getADoc);
-router.delete("/:id", authGuard, checkDocAccess, deleteADoc);
-router.put("/:id", authGuard, checkDocAccess, updateDocValidation, editADoc);
-router.get("/download/:id", authGuard, checkDocAccess, downloadADoc);
+router.use(authGuard);
+
+router.post("/", saveDoc);
+router.get("/", getAllDocs);
+router.get("/:id", checkDocAccess, getADoc);
+router.delete("/:id", checkDocAccess, deleteADoc);
+router.put("/:id", checkDocAccess, updateDocValidation, editADoc);
+router.get("/download/:id", checkDocAccess, downloadADoc);
 
 // Export the router
 module.exports = router;
