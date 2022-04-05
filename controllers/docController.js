@@ -40,7 +40,7 @@ const saveDoc = async (req, res) => {
                 message: "Your file has been uploaded!",
             });
         } catch (err) {
-            return res.status(400).json({ message: err.message });
+            return res.status(400).json({ message: 'File upload failed!' });
         }
     });
 };
