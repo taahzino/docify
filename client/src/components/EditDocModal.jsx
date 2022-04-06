@@ -3,10 +3,13 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { useDocs } from "../contexts/DocsContext";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
+import Loading from "./Loading";
 
-const EditDocModal = ({ show, handleClose, doc }) => {
-    const [shouldUpdate, setShouldUpdate] = useState(false);
+const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
     const [newTitle, setNewTitle] = useState(doc.title);
+
+    const [shouldUpdate, setShouldUpdate] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -22,6 +25,11 @@ const EditDocModal = ({ show, handleClose, doc }) => {
         }
     );
 
+    const handleClose = () => {
+        setLoading(false);
+        closeModal();
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
         setErrorMessage("");
@@ -29,6 +37,7 @@ const EditDocModal = ({ show, handleClose, doc }) => {
         if (doc.title.trim() === newTitle.trim()) {
             return setErrorMessage("Nothing to update");
         }
+        setLoading(true);
         setShouldUpdate(true);
     };
 
@@ -47,6 +56,7 @@ const EditDocModal = ({ show, handleClose, doc }) => {
             } else {
                 setErrorMessage(updateResult.data.message);
             }
+            setLoading(false);
             setShouldUpdate(false);
         }
 
@@ -71,6 +81,9 @@ const EditDocModal = ({ show, handleClose, doc }) => {
                     <AlertComponent variant="success" show={successMessage}>
                         {successMessage}
                     </AlertComponent>
+
+                    <Loading loading={loading} text={`Updating ${doc.title}`} />
+
                     <Form.Group className="mb-3" controlId="formBasicTitle">
                         <Form.Label>New Title</Form.Label>
                         <Form.Control

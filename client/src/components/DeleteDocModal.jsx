@@ -3,11 +3,14 @@ import { Modal, Button } from "react-bootstrap";
 import { useDocs } from "../contexts/DocsContext";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
+import Loading from "./Loading";
 
 const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
-    const [shouldDelete, setShouldDelete] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
+
+    const [shouldDelete, setShouldDelete] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const { dispatchDocs } = useDocs();
 
@@ -18,7 +21,10 @@ const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
     );
 
     const deleteHandler = () => {
-        setShouldDelete(true);
+        setLoading(true);
+        setTimeout(() => {
+            setShouldDelete(true);
+        }, 3000);
     };
 
     useEffect(() => {
@@ -32,11 +38,12 @@ const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
             } else {
                 setErrorMessage(deleteDoc.data.message);
             }
+            setShouldDelete(false);
+            setLoading(false);
         }
 
-        setShouldDelete(false);
-
         return () => {
+            setLoading(false);
             setShouldDelete(false);
         };
     }, [deleteDoc]);
@@ -45,19 +52,24 @@ const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <h5>You're about to delete: {doc.title}</h5>
+                    <h5>Confirm deletion</h5>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <AlertComponent variant="danger" show={errorMessage}>
                     {errorMessage}
                 </AlertComponent>
+
                 <AlertComponent variant="success" show={successMessage}>
                     {successMessage}
                 </AlertComponent>
+
+                <Loading loading={loading} text={`Deleting ${doc.title}`} />
+
                 <p>
                     Do you really want to delete <b>{doc.title}</b>?
                 </p>
+
                 <img src={thumbnail} alt={doc.title} width="200px" />
             </Modal.Body>
             <Modal.Footer>

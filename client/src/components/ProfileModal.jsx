@@ -3,8 +3,9 @@ import { Modal, Button, Form } from "react-bootstrap";
 import AlertComponent from "./Alert";
 import { useAuth } from "../contexts/AuthContext";
 import { useXhr } from "../hooks/useXhr";
+import Loading from "./Loading";
 
-const ProfileModal = ({ show, handleClose }) => {
+const ProfileModal = ({ show, handleClose: closeModal }) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -17,17 +18,25 @@ const ProfileModal = ({ show, handleClose }) => {
     const { currentUser, setCurrentUser } = useAuth();
 
     const [shouldUpdate, setShouldUpdate] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleClose = () => {
+        setLoading(false);
+        closeModal();
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
         setErrorMsg("");
         setSuccessMsg("");
+        setLoading(false);
 
         if (password.trim().length === 0) {
             setErrorMsg("Password is required to make any change!");
             return;
         }
 
+        setLoading(true);
         setShouldUpdate(true);
     };
 
@@ -71,6 +80,8 @@ const ProfileModal = ({ show, handleClose }) => {
                     setSuccessMsg();
                 }, 3000);
             }
+
+            setLoading(false);
         }
 
         return () => {
@@ -94,6 +105,8 @@ const ProfileModal = ({ show, handleClose }) => {
                     <AlertComponent variant="success" show={successMsg}>
                         {successMsg}
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Updating" />
 
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Name</Form.Label>

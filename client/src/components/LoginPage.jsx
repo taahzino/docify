@@ -4,6 +4,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import AlertComponent from "./Alert";
 import { useAuth } from "../contexts/AuthContext";
+import Loading from "./Loading";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -16,16 +17,18 @@ const LoginPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
 
     const [filledUp, setFilledUp] = useState();
+    const [loading, setLoading] = useState(false);
 
     const history = useHistory();
 
     const { login } = useAuth();
 
-    const submitHandler = e => {
+    const submitHandler = (e) => {
         e.preventDefault();
         setFilledUp(false);
         setShowError(false);
         setShowSuccess(false);
+        setLoading(false);
         setErrorMessage("");
         setSuccessMessage("");
 
@@ -35,6 +38,7 @@ const LoginPage = () => {
             return;
         }
 
+        setLoading(true);
         setFilledUp(true);
     };
 
@@ -44,13 +48,12 @@ const LoginPage = () => {
                 try {
                     const result = await login({
                         email,
-                        password
+                        password,
                     });
 
                     if (result.type === "error") {
                         setShowError(true);
                         setErrorMessage(result.data.message);
-                        setFilledUp(false);
                     } else {
                         setShowSuccess(true);
                         setSuccessMessage(result.data.message);
@@ -61,6 +64,8 @@ const LoginPage = () => {
                             history.push("/");
                         }, 1000);
                     }
+                    setFilledUp(false);
+                    setLoading(false);
                 } catch (error) {
                     console.error(error);
                 }
@@ -86,9 +91,12 @@ const LoginPage = () => {
                     <AlertComponent variant="danger" show={showError}>
                         {errorMessage}
                     </AlertComponent>
+
                     <AlertComponent variant="success" show={showSuccess}>
                         {successMessage}
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Logging you in" />
 
                     <h4>Login</h4>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -97,7 +105,7 @@ const LoginPage = () => {
                             type="email"
                             placeholder="Enter your email"
                             value={email}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
                         />
@@ -109,7 +117,7 @@ const LoginPage = () => {
                             type="password"
                             placeholder="Enter your password"
                             value={password}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPassword(e.target.value);
                             }}
                         />

@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
+import { HashLoader } from "react-spinners";
+import Loading from "./Loading";
 
-const MailDocModal = ({ show, handleClose, doc }) => {
+const MailDocModal = ({ show, handleClose: closeModal, doc }) => {
     const [receiver, setReceiver] = useState("");
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
 
     const [shouldRequest, setShouldRequest] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [errorMsg, setErrorMsg] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
 
     const title = doc.title;
+
+    const handleClose = () => {
+        setLoading(false);
+        closeModal();
+    };
 
     const sendDocResult = useXhr(
         shouldRequest,
@@ -30,7 +38,17 @@ const MailDocModal = ({ show, handleClose, doc }) => {
         e.preventDefault();
         setErrorMsg("");
         setSuccessMsg("");
+        setLoading(false);
 
+        if (!receiver) {
+            return setErrorMsg("Receiver address is required!");
+        }
+
+        if (!subject) {
+            return setErrorMsg("Subject is required!");
+        }
+
+        setLoading(true);
         setShouldRequest(true);
     };
 
@@ -57,6 +75,7 @@ const MailDocModal = ({ show, handleClose, doc }) => {
             } else {
                 setErrorMsg(sendDocResult.data.message);
             }
+            setLoading(false);
         }
 
         setShouldRequest(false);
@@ -82,6 +101,9 @@ const MailDocModal = ({ show, handleClose, doc }) => {
                     <AlertComponent variant="success" show={successMsg}>
                         {successMsg}
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Sending" />
+
                     <Form.Group className="mb-3" controlId="formBasicReceiver">
                         <Form.Label>Receiver</Form.Label>
                         <Form.Control

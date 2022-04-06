@@ -8,6 +8,7 @@ import NewDocModal from "./NewDocModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useXhr } from "../hooks/useXhr";
 import { useDocs } from "../contexts/DocsContext";
+import Loading from "./Loading";
 
 const DashboardPage = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -16,6 +17,7 @@ const DashboardPage = () => {
     const [shouldLogout, setShouldLogout] = useState(false);
 
     const [shouldGetDocs, setShouldGetDocs] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const { logout } = useAuth();
 
@@ -56,11 +58,12 @@ const DashboardPage = () => {
                     payload,
                 });
             }
-
+            setLoading(false);
             setShouldGetDocs(false);
         }
 
         return () => {
+            setLoading(false);
             setShouldGetDocs(false);
         };
     }, [getAllDocs]);
@@ -113,12 +116,16 @@ const DashboardPage = () => {
                         </div>
                     </div>
                     <hr />
+
                     <AlertComponent
                         variant="secondary"
-                        show={docs && docs.length < 1}
+                        show={!loading && docs && docs.length < 1}
                     >
                         No document uploaded yet
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Getting your docs" />
+
                     <Gallery docs={docs} />
                 </Container>
             </Container>

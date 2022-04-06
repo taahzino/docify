@@ -5,11 +5,14 @@ import { useAuth } from "../contexts/AuthContext";
 import AlertComponent from "./Alert";
 import axios from "axios";
 import { useDocs } from "../contexts/DocsContext";
+import Loading from "./Loading";
 
 const NewDocModal = ({ show, handleClose: hideModal }) => {
     const [title, setTitle] = useState("");
     const [file, setFile] = useState();
+
     const [shouldRequest, setShouldRequest] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -21,6 +24,7 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
     const handleClose = () => {
         setTitle("");
         setFile(null);
+        setLoading(false);
         hideModal();
     };
 
@@ -28,10 +32,12 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
         e.preventDefault();
         setShouldRequest(false);
         setErrorMessage("");
+        setLoading(false);
 
         if (!title || !file) {
             return setErrorMessage("Please give a title and select a file");
         }
+        setLoading(true);
         setShouldRequest(true);
     };
 
@@ -71,6 +77,9 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
                         if (error.response.status === 401) {
                             window.location.href = "/";
                         }
+                    })
+                    .then(() => {
+                        setLoading(false);
                     });
             }
         })();
@@ -96,6 +105,9 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
                     <AlertComponent variant="success" show={successMessage}>
                         {successMessage}
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Uploading" />
+
                     <Form.Group className="mb-3" controlId="formBasicTitle">
                         <Form.Label>Document Title</Form.Label>
                         <Form.Control

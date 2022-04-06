@@ -4,6 +4,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import AlertComponent from "./Alert";
 import { useAuth } from "../contexts/AuthContext";
+import Loading from "./Loading";
 
 const SignupPage = () => {
     const [username, setUsername] = useState("");
@@ -19,15 +20,17 @@ const SignupPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
 
     const [filledUp, setFilledUp] = useState();
+    const [loading, setLoading] = useState(false);
 
     const history = useHistory();
 
     const { signup } = useAuth();
 
-    const submitHandler = async e => {
+    const submitHandler = async (e) => {
         e.preventDefault();
         setShowError(false);
         setShowSuccess(false);
+        setLoading(false);
         setErrorMessage("");
         setSuccessMessage("");
 
@@ -36,6 +39,7 @@ const SignupPage = () => {
             setErrorMessage("All fields are required!");
             return;
         }
+        setLoading(true);
         setFilledUp(true);
     };
 
@@ -48,7 +52,7 @@ const SignupPage = () => {
                         email,
                         phone,
                         password,
-                        password2
+                        password2,
                     });
 
                     if (result.type === "error") {
@@ -67,6 +71,7 @@ const SignupPage = () => {
                 } catch (error) {
                     console.error(error);
                 }
+                setLoading(false);
             }
         })();
 
@@ -90,9 +95,12 @@ const SignupPage = () => {
                     <AlertComponent variant="danger" show={showError}>
                         {errorMessage}
                     </AlertComponent>
+
                     <AlertComponent variant="success" show={showSuccess}>
                         {successMessage}
                     </AlertComponent>
+
+                    <Loading loading={loading} text="Signing up" />
 
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Your Name</Form.Label>
@@ -100,7 +108,7 @@ const SignupPage = () => {
                             type="text"
                             placeholder="Enter your name"
                             value={username}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setUsername(e.target.value);
                             }}
                         />
@@ -112,7 +120,7 @@ const SignupPage = () => {
                             type="email"
                             placeholder="Enter your email"
                             value={email}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
                         />
@@ -124,7 +132,7 @@ const SignupPage = () => {
                             type="text"
                             placeholder="Enter your phone"
                             value={phone}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPhone(e.target.value);
                             }}
                         />
@@ -136,7 +144,7 @@ const SignupPage = () => {
                             type="password"
                             placeholder="Enter your password"
                             value={password}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPassword(e.target.value);
                             }}
                         />
@@ -151,7 +159,7 @@ const SignupPage = () => {
                             type="password"
                             placeholder="Repeat your password"
                             value={password2}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setPassword2(e.target.value);
                             }}
                         />
