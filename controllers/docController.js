@@ -35,8 +35,6 @@ const saveDoc = async (req, res) => {
                 user: res.locals.user._id,
             });
 
-            console.log(newDoc);
-
             res.status(200).json({
                 doc: newDoc,
                 message: "Your file has been uploaded!",
@@ -92,12 +90,14 @@ const mailADoc = async (req, res) => {
             {
                 to: receiver,
                 subject,
-                text: `${message}<div>This email was sent using Docify App by: ${user.email}`,
+                text: `${message}<div><i>This email was sent using <b>Docify</b> App by: <b>${user.email}</b></i></div>`,
                 filename: doc.filename,
             },
-            (err) => {
+            (err, info) => {
                 if (err) {
                     console.log(err);
+                } else {
+                    console.log(info);
                 }
             }
         );
