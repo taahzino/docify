@@ -43,12 +43,16 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
                 formData.append("document", file);
 
                 axios
-                    .post("http://localhost:4000/api/docs", formData, {
-                        headers: {
-                            Authorization,
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
+                    .post(
+                        `${process.env.REACT_APP_SERVER_URL}/api/docs`,
+                        formData,
+                        {
+                            headers: {
+                                Authorization,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }
+                    )
                     .then(function (response) {
                         setSuccessMessage(response.data.message);
                         setTitle("");
