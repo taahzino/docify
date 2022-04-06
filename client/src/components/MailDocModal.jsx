@@ -47,6 +47,9 @@ const MailDocModal = ({ show, handleClose, doc }) => {
             if (sendDocResult.type && sendDocResult.type === "success") {
                 setSuccessMsg(sendDocResult.data.message);
 
+                setReceiver("");
+                setMessage("");
+
                 setTimeout(() => {
                     setSuccessMsg("");
                     handleClose();

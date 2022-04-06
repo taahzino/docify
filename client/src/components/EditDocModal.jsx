@@ -37,6 +37,7 @@ const EditDocModal = ({ show, handleClose, doc }) => {
             if (updateResult.type === "success") {
                 setSuccessMessage(updateResult.data.message);
                 setTimeout(() => {
+                    setSuccessMessage("");
                     handleClose();
                     dispatchDocs({
                         type: "update",
