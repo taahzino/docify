@@ -26,11 +26,18 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                         }
                     })
                     .catch((error) => {
-                        setResult({ type: "error", ...error.response });
-                        if (error.response.status === 401) {
-                            setTimeout(() => {
-                                logout();
-                            }, 3000);
+                        if (error.response) {
+                            setResult({ type: "error", ...error.response });
+                            if (error.response.status === 401) {
+                                setTimeout(() => {
+                                    logout();
+                                }, 3000);
+                            }
+                        } else {
+                            setResult({
+                                type: "error",
+                                data: { message: "Something wrong happened" },
+                            });
                         }
                     })
                     .then(() => {
