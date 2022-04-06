@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
-import { HashLoader } from "react-spinners";
 import Loading from "./Loading";
 
 const MailDocModal = ({ show, handleClose: closeModal, doc }) => {
