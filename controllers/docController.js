@@ -3,6 +3,8 @@ const { uploader } = require("../utils/uploader");
 const Doc = require("../models/docModel");
 const path = require("path");
 const fs = require("fs");
+const { sendMail } = require("../config/nodemailer");
+const validator = require("validator");
 
 const getAllDocs = async (req, res) => {
     try {
@@ -40,7 +42,7 @@ const saveDoc = async (req, res) => {
                 message: "Your file has been uploaded!",
             });
         } catch (err) {
-            return res.status(400).json({ message: 'File upload failed!' });
+            return res.status(400).json({ message: "File upload failed!" });
         }
     });
 };
@@ -49,6 +51,62 @@ const getADoc = (req, res) => {
     res.status(200).sendFile(
         path.join(__dirname, "../uploads/" + res.locals.doc.filename)
     );
+};
+
+const mailADoc = async (req, res) => {
+    try {
+        const doc = res.locals.doc;
+        const user = res.locals.user;
+
+        const receiver =
+            req.body.receiver && req.body.receiver.trim().length > 0
+                ? req.body.receiver
+                : false;
+
+        if (!receiver) {
+            res.status(400);
+            throw new Error("Receiver address is required!");
+        }
+
+        if (!validator.isEmail(receiver)) {
+            res.status(400);
+            throw new Error("Receiver address is invalid!");
+        }
+
+        const subject =
+            req.body.subject && req.body.subject.trim().length > 0
+                ? req.body.subject
+                : doc.title;
+
+        const message =
+            req.body.message && req.body.message.trim().length > 0
+                ? req.body.message
+                : "";
+
+        res.status(200).json({
+            message: "Your document will be sent in a minute!",
+            doc,
+        });
+
+        sendMail(
+            {
+                to: receiver,
+                subject,
+                text: `${message}<div>This email was sent using Docify App by: ${user.email}`,
+                filename: doc.filename,
+            },
+            (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            }
+        );
+    } catch (error) {
+        const statusCode = res.statusCode || 500;
+        res.status(statusCode).json({
+            message: error.message,
+        });
+    }
 };
 
 const editADoc = async (req, res) => {
@@ -62,7 +120,7 @@ const editADoc = async (req, res) => {
         );
 
         res.status(200).json({
-            message: 'Document updated successfully!',
+            message: "Document updated successfully!",
             doc,
         });
     } catch (error) {
@@ -100,4 +158,5 @@ module.exports = {
     downloadADoc,
     deleteADoc,
     editADoc,
+    mailADoc,
 };

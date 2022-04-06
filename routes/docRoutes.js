@@ -10,6 +10,7 @@ const {
     downloadADoc,
     deleteADoc,
     editADoc,
+    mailADoc,
 } = require("../controllers/docController");
 const checkDocAccess = require("../middlewares/docMiddlewares/checkDocAccess");
 const updateDocValidation = require("../middlewares/docMiddlewares/updateDocValidation");
@@ -26,6 +27,7 @@ router.get("/:id", checkDocAccess, getADoc);
 router.delete("/:id", checkDocAccess, deleteADoc);
 router.put("/:id", checkDocAccess, updateDocValidation, editADoc);
 router.get("/download/:id", checkDocAccess, downloadADoc);
+router.post("/mail/:id", checkDocAccess, mailADoc);
 
 // Export the router
 module.exports = router;
