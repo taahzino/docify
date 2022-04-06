@@ -1,6 +1,6 @@
 {
     "name": "client",
-    "homepage": "http://localhost:4000",
+    "homepage": "https://docify.devtahsin.com",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
