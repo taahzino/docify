@@ -1,0 +1,40 @@
+.options {
+    display: flex;
+    flex-direction: column;
+
+    background-color: #191e2c;
+    color: #fff;
+    border-radius: 5px;
+
+    overflow: hidden;
+
+    opacity: 0;
+    display: hidden;
+    z-index: -100;
+
+    position: absolute;
+    top: 20px;
+    right: 10px;
+
+    transition: opacity 0.3s ease-in;
+}
+
+.options.show {
+    opacity: 1;
+    display: flex;
+    z-index: 100;
+}
+
+.options .option {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+
+    transition: all 0.3s ease-in-out;
+}
+
+.options .option:hover {
+    background-color: #000;
+    color: #fff;
+}

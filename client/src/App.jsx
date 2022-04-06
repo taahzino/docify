@@ -9,6 +9,7 @@ import GuestRoute from "./components/GuestRoute.jsx";
 import { useXhr } from "./hooks/useXhr.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { DocsProvider } from "./contexts/DocsContext.jsx";
+import "./styles/global.css";
 
 const App = () => {
     const { setCurrentUser } = useAuth();
@@ -32,6 +33,8 @@ const App = () => {
         if (profileRequest && profileRequest.data) {
             setCurrentUser(profileRequest.data.user);
         }
+
+        return () => {};
     }, [profileRequest]);
 
     return (

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const MailDocModal = ({ show, handleClose, title, id }) => {
+const MailDocModal = ({ show, handleClose, doc }) => {
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
 
+    const title = doc.title;
+
     useEffect(() => {
         setSubject(title);
+
+        return () => {
+            setSubject("");
+        };
     }, [title]);
 
     return (
@@ -33,7 +39,7 @@ const MailDocModal = ({ show, handleClose, title, id }) => {
                             as="textarea"
                             placeholder="Message"
                             value={message}
-                            onChange={e => {
+                            onChange={(e) => {
                                 setMessage(e.target.value);
                             }}
                             style={{ height: "100px" }}

@@ -59,6 +59,10 @@ const DashboardPage = () => {
 
             setShouldGetDocs(false);
         }
+
+        return () => {
+            setShouldGetDocs(false);
+        };
     }, [getAllDocs]);
 
     useEffect(() => {
@@ -76,7 +80,7 @@ const DashboardPage = () => {
                 className="rounded d-flex align-items-center justify-content-center"
             >
                 <Container
-                    className={`bg-dark text-light rounded p-2 ${classes.dashboard}`}
+                    className={`text-light rounded p-2 ${classes.dashboard}`}
                 >
                     <div className="d-flex justify-content-between">
                         <h4>Dashboard</h4>

@@ -47,6 +47,8 @@ const ProfileModal = ({ show, handleClose }) => {
         setUsername(currentUser.name);
         setEmail(currentUser.email);
         setPhone(currentUser.phone);
+
+        return () => {};
     }, [currentUser]);
 
     useEffect(() => {
@@ -80,7 +82,7 @@ const ProfileModal = ({ show, handleClose }) => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <h5>Hi, Fulan</h5>
+                    <h5>Assalamu Alaikum, {currentUser.name}</h5>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

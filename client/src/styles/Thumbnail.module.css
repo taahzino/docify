@@ -1,14 +1,1 @@
-.thumbnail_container {
-    border-radius: 5px;
-    height: 200px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-}
 
-.thumbnail {
-    object-fit: contain;
-}

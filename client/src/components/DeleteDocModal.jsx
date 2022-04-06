@@ -4,7 +4,7 @@ import { useDocs } from "../contexts/DocsContext";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
 
-const DeleteDocModal = ({ show, handleClose, title, thumbnail, docId }) => {
+const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
     const [shouldDelete, setShouldDelete] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
@@ -14,7 +14,7 @@ const DeleteDocModal = ({ show, handleClose, title, thumbnail, docId }) => {
     const deleteDoc = useXhr(
         shouldDelete,
         "delete",
-        `${process.env.REACT_APP_SERVER_URL}/api/docs/${docId}`
+        `${process.env.REACT_APP_SERVER_URL}/api/docs/${doc._id}`
     );
 
     const deleteHandler = () => {
@@ -27,7 +27,7 @@ const DeleteDocModal = ({ show, handleClose, title, thumbnail, docId }) => {
                 setSuccessMessage(deleteDoc.data.message);
                 setTimeout(() => {
                     handleClose();
-                    dispatchDocs({ type: "delete", docId });
+                    dispatchDocs({ type: "delete", docId: doc._id });
                 }, 300);
             } else {
                 setErrorMessage(deleteDoc.data.message);
@@ -45,7 +45,7 @@ const DeleteDocModal = ({ show, handleClose, title, thumbnail, docId }) => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <h5>You're about to delete: {title}</h5>
+                    <h5>You're about to delete: {doc.title}</h5>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -56,9 +56,9 @@ const DeleteDocModal = ({ show, handleClose, title, thumbnail, docId }) => {
                     {successMessage}
                 </AlertComponent>
                 <p>
-                    Do you really want to delete <b>{title}</b>?
+                    Do you really want to delete <b>{doc.title}</b>?
                 </p>
-                <img src={thumbnail} alt={title} width="200px" />
+                <img src={thumbnail} alt={doc.title} width="200px" />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

@@ -4,9 +4,9 @@ import { useDocs } from "../contexts/DocsContext";
 import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
 
-const EditDocModal = ({ show, handleClose, title, docId }) => {
+const EditDocModal = ({ show, handleClose, doc }) => {
     const [shouldUpdate, setShouldUpdate] = useState(false);
-    const [newTitle, setNewTitle] = useState(title);
+    const [newTitle, setNewTitle] = useState(doc.title);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -16,7 +16,7 @@ const EditDocModal = ({ show, handleClose, title, docId }) => {
     const updateResult = useXhr(
         shouldUpdate,
         "put",
-        `${process.env.REACT_APP_SERVER_URL}/api/docs/${docId}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/docs/${doc._id}`,
         {
             title: newTitle,
         }
@@ -26,7 +26,7 @@ const EditDocModal = ({ show, handleClose, title, docId }) => {
         e.preventDefault();
         setErrorMessage("");
         setSuccessMessage("");
-        if (title.trim() === newTitle.trim()) {
+        if (doc.title.trim() === newTitle.trim()) {
             return setErrorMessage("Nothing to update");
         }
         setShouldUpdate(true);
@@ -48,13 +48,17 @@ const EditDocModal = ({ show, handleClose, title, docId }) => {
             }
             setShouldUpdate(false);
         }
+
+        return () => {
+            setShouldUpdate(false);
+        };
     }, [updateResult]);
 
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <h5>You're editing: {title}</h5>
+                    <h5>You're editing: {doc.title}</h5>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

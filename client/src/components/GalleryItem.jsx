@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { Col } from "react-bootstrap";
-import classes from "../styles/Thumbnail.module.css";
-import Actions from "./Actions";
+import React, { useState, useEffect, useRef } from "react";
 import { Lightbox } from "react-modal-image";
+import classes from "../styles/GalleryItem.module.css";
+import moment from "moment";
+import DocActions from "./DocActions";
 
-const GalleryItem = ({ docId, title }) => {
+const GalleryItem = ({ doc, setDocAction }) => {
     const [showModal, setShowModal] = useState();
     const [modalSrc, setModalSrc] = useState();
     const [modalTitle, setModalTitle] = useState();
 
-    const thumbnail = `${process.env.REACT_APP_SERVER_URL}/api/docs/${docId}`;
-    const download = `${process.env.REACT_APP_SERVER_URL}/api/docs/download/${docId}`;
+    const thumbnail = `${process.env.REACT_APP_SERVER_URL}/api/docs/${doc._id}`;
+    const download = `${process.env.REACT_APP_SERVER_URL}/api/docs/download/${doc._id}`;
+
+    const [showActions, setShowActions] = useState(false);
 
     const openModal = (thumbnail, title) => {
         setShowModal(true);
@@ -18,29 +20,61 @@ const GalleryItem = ({ docId, title }) => {
         setModalTitle(title);
     };
 
+    const dotsRef = useRef();
+
+    useEffect(() => {
+        window.addEventListener("click", (e) => {
+            if (e.target !== dotsRef.current) {
+                setShowActions(false);
+            }
+        });
+
+        return () => {};
+    }, []);
+
     return (
         <>
-            <Col sm={12} md={6} lg={3} className={`p-3`}>
-                <div className="rounded px-3 py-1">
+            <div className={`${classes.galleryItem}`}>
+                <div className="rounded">
+                    <div
+                        className={`d-flex justify-content-between mt-1 mb-2 position-relative`}
+                    >
+                        <div>
+                            <i className="bi bi-clock me-2"></i>
+                            {moment(doc.createdAt).format("DD MMMM YYYY")}
+                        </div>
+
+                        <DocActions
+                            show={showActions}
+                            doc={doc}
+                            setDocAction={setDocAction}
+                        />
+
+                        <div
+                            onClick={() => {
+                                setShowActions((state) => !state);
+                            }}
+                        >
+                            <i
+                                className="bi bi-three-dots-vertical"
+                                role="button"
+                                ref={dotsRef}
+                            ></i>
+                        </div>
+                    </div>
                     <div className={`${classes.thumbnail_container}`}>
                         <img
                             src={thumbnail}
-                            alt={title}
-                            className={`img-fluid rounded ${classes.thumbnail}`}
+                            alt={doc.title}
+                            className={`${classes.thumbnail}`}
                             onClick={() => {
-                                openModal(thumbnail, title);
+                                openModal(thumbnail, doc.title);
                             }}
                         />
                     </div>
-                    <h5>{title}</h5>
-                    <Actions
-                        docId={docId}
-                        thumbnail={thumbnail}
-                        title={title}
-                        download={download}
-                    />
+                    <h5 className={`my-2`}>{doc.title}</h5>
                 </div>
-            </Col>
+            </div>
             {showModal && (
                 <Lightbox
                     medium={modalSrc}
