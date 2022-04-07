@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "server": "NODE_ENV=production node app.js"
+    "server": "NODE_ENV=production node app.js",
+    "deploy": "git checkout master && git merge main && git push cpanel master && git checkout main && echo 'Deployed successfully!'"
   },
   "author": "Tahsin Ahmed Tushar",
   "license": "ISC",
