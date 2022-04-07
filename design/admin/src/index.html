@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpack</title>
+    <link rel="shortcut icon" href="./images/js.png" type="image/x-icon">
+
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body id="body-pd">
+
+    <header class="header" id="header">
+        <div class="header__toggle">
+            <i class='bx bx-menu' id="header-toggle"></i>
+        </div>
+
+        <div class="header__img">
+            <img src="./images/js.png" alt="">
+        </div>
+    </header>
+
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div>
+                <a href="#" class="nav__logo">
+                    <i class='bx bx-layer nav__logo-icon'></i>
+                    <span class="nav__logo-name">Bedimcode</span>
+                </a>
+
+                <div class="nav__list">
+                    <a href="#" class="nav__link active">
+                        <i class='bx bx-grid-alt nav__icon'></i>
+                        <span class="nav__name">Dashboard</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class='bx bx-user nav__icon'></i>
+                        <span class="nav__name">Users</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class='bx bx-message-square-detail nav__icon'></i>
+                        <span class="nav__name">Messages</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class='bx bx-bookmark nav__icon'></i>
+                        <span class="nav__name">Favorites</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class='bx bx-folder nav__icon'></i>
+                        <span class="nav__name">Data</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class='bx bx-bar-chart-alt-2 nav__icon'></i>
+                        <span class="nav__name">Analytics</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="#" class="nav__link">
+                <i class='bx bx-log-out nav__icon'></i>
+                <span class="nav__name">Log Out</span>
+            </a>
+        </nav>
+    </div>
+
+    <main class="py-4">
+        <div class="row my-3">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div
+                    class="card bg-primary py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        3 <i class='bx bx-image-add'></i>
+                    </div>
+                    <div class="lead">Uploaded Today</div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div
+                    class="card bg-primary py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        3 <i class='bx bx-user-plus'></i>
+                    </div>
+                    <div class="lead">Registered Today</div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div class="card bg-info py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        26 <i class='bx bx-image-alt'></i>
+                    </div>
+                    <div class="lead">Total Documents</div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div class="card bg-info py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        5 <i class='bx bx-user'></i>
+                    </div>
+                    <div class="lead">Total Users</div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div
+                    class="card bg-success py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        5
+                    </div>
+                    <div class="lead">Approved Users</div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div
+                    class="card bg-danger py-4 d-flex flex-column align-items-center justify-content-center text-center">
+                    <div class="card-content display-1 text-light">
+                        5
+                    </div>
+                    <div class="lead">Pending Users</div>
+                </div>
+            </div>
+        </div>
+        <div class="d-none row">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div class="card w-100">
+                    <div class="h4 fw-bold m-1">
+                        <i class='bx bx-dots-horizontal-rounded'></i>
+                    </div>
+                    <div class="card-header d-flex flex-wrap align-items-center justify-content-center">
+                        <div class="w-25">
+                            <img src="./images/js.png" alt="" class="img-fluid">
+                        </div>
+                        <div class="w-75 d-flex flex-column justify-content-center px-1">
+                            <div class="fw-bold">Tahsin Ahmed Tushar</div>
+                            <div>tahsintushar.dev@gmail.com</div>
+                            <div>01712345678</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- <div class="tag status bg-danger text-light">Docs: 20</div> -->
+                        <div class="tag status bg-primary text-light">Approved</div>
+                        <!-- <div class="tag status bg-warning text-dark">Pending</div> -->
+                        <div class="tag status bg-success text-light">Free</div>
+                        <div class="tag status bg-info text-light">User</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
