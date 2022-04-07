@@ -64,12 +64,20 @@ const GalleryItem = ({ doc, setDocAction }) => {
                     </div>
                     <div className={`${classes.thumbnail_container}`}>
                         <img
-                            src={thumbnail}
+                            src={
+                                doc.mimetype !== "application/pdf"
+                                    ? thumbnail
+                                    : "./img_placeholder.png"
+                            }
                             alt={doc.title}
                             className={`${classes.thumbnail}`}
-                            onClick={() => {
-                                openModal(thumbnail, doc.title);
-                            }}
+                            onClick={
+                                doc.mimetype !== "application/pdf"
+                                    ? () => {
+                                          openModal(thumbnail, doc.title);
+                                      }
+                                    : () => {}
+                            }
                         />
                     </div>
                     <h5 className={`my-2`}>{doc.title}</h5>
