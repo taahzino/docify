@@ -1,0 +1,20 @@
+.userCard {
+    background-color: #2b2f3e;
+    margin: 10px 0;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.tag {
+    width: auto;
+    display: inline-block;
+    border-radius: 10000000px;
+    font-size: 16px;
+    font-family: Nunito, serif;
+    color: #000;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 5px 10px;
+    margin: 3px;
+    cursor: default;
+}

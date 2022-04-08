@@ -1,0 +1,14 @@
+.reportCard {
+    background-color: #2b2f3e;
+    margin: 10px 0;
+}
+
+.reportCardContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    margin-left: 15px;
+}
