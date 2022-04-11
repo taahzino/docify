@@ -5,7 +5,7 @@ import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
 import Loading from "./Loading";
 
-const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
+const DeleteDocModal = ({ show, handleClose: closeModal, thumbnail, doc }) => {
     const [errorMessage, setErrorMessage] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
 
@@ -25,6 +25,12 @@ const DeleteDocModal = ({ show, handleClose, thumbnail, doc }) => {
         setTimeout(() => {
             setShouldDelete(true);
         }, 3000);
+    };
+
+    const handleClose = () => {
+        closeModal();
+        setErrorMessage("");
+        setSuccessMessage("");
     };
 
     useEffect(() => {

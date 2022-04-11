@@ -25,6 +25,8 @@ const NewDocModal = ({ show, handleClose: hideModal }) => {
         setTitle("");
         setFile(null);
         setLoading(false);
+        setErrorMessage("");
+        setSuccessMessage("");
         hideModal();
     };
 

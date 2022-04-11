@@ -26,6 +26,8 @@ const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
     );
 
     const handleClose = () => {
+        setErrorMessage("");
+        setSuccessMessage("");
         setLoading(false);
         closeModal();
     };
