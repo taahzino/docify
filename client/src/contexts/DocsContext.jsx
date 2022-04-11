@@ -25,6 +25,8 @@ const reducer = (state, action) => {
             return state.filter(
                 (doc) => doc._id.toString() !== action.docId.toString()
             );
+        case "unload":
+            return [];
         default:
             return state;
     }

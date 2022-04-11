@@ -41,6 +41,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         if (logoutResult && logoutResult.type === "success") {
+            dispatchDocs({ type: "unload" });
             logout();
         }
 

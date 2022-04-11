@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import AlertComponent from "./Alert";
 import { useAuth } from "../contexts/AuthContext";
 import Loading from "./Loading";
+import { useDocs } from "../contexts/DocsContext";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -22,6 +23,8 @@ const LoginPage = () => {
     const history = useHistory();
 
     const { login } = useAuth();
+
+    const { dispatchDocs } = useDocs();
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -41,6 +44,11 @@ const LoginPage = () => {
         setLoading(true);
         setFilledUp(true);
     };
+
+    useEffect(() => {
+        dispatchDocs({ type: "unload" });
+        return () => {};
+    }, []);
 
     useEffect(() => {
         (async () => {

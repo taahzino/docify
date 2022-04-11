@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import AlertComponent from "./Alert";
 import { useAuth } from "../contexts/AuthContext";
 import Loading from "./Loading";
+import { useDocs } from "../contexts/DocsContext";
 
 const SignupPage = () => {
     const [username, setUsername] = useState("");
@@ -24,6 +25,8 @@ const SignupPage = () => {
 
     const history = useHistory();
 
+    const { dispatchDocs } = useDocs();
+
     const { signup } = useAuth();
 
     const submitHandler = async (e) => {
@@ -42,6 +45,11 @@ const SignupPage = () => {
         setLoading(true);
         setFilledUp(true);
     };
+
+    useEffect(() => {
+        dispatchDocs({ type: "unload" });
+        return () => {};
+    }, []);
 
     useEffect(() => {
         (async () => {
