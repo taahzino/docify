@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import DashboardPage from "./components/DashboardPage.jsx";
 import LoginPage from "./components/LoginPage.jsx";
@@ -10,6 +10,7 @@ import { useXhr } from "./hooks/useXhr.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { DocsProvider } from "./contexts/DocsContext.jsx";
 import "./styles/global.css";
+import NotFoundPage from "./components/NotFoundPage.jsx";
 
 const App = () => {
     const { setCurrentUser } = useAuth();
@@ -53,6 +54,7 @@ const App = () => {
                             path="/signup"
                             component={SignupPage}
                         />
+                        <Route component={NotFoundPage} />
                     </Switch>
                 </Layout>
             </Router>
