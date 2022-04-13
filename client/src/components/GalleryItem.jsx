@@ -75,6 +75,7 @@ const GalleryItem = ({ doc, setDocAction }) => {
                                         : "./img_placeholder.png"
                                 }
                                 alt={doc.title}
+                                crossOrigin="use-credentials"
                                 className={`${classes.thumbnail}`}
                                 onClick={
                                     doc.mimetype !== "application/pdf"
