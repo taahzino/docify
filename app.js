@@ -62,8 +62,8 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routes
 app.use("/api", require("./routes/apiRoutes"));
-app.use("/app", express.static(path.join(__dirname, "./client/build/")));
-// app.use("/:anything", express.static(path.join(__dirname, "./client/build/")));
+app.use("/", express.static(path.join(__dirname, "./client/build/")));
+app.use("/:anything", express.static(path.join(__dirname, "./client/build/")));
 app.use(errorHandler);
 
 // Start the server
