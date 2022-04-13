@@ -44,32 +44,30 @@ const App = () => {
     }, [profileRequest]);
 
     useEffect(() => {
-        if (currentUser && currentUser._id) {
-            const socket = io(process.env.REACT_APP_SERVER_URL);
+        const socket = io(process.env.REACT_APP_SERVER_URL);
 
-            socket.on("connect", () => {
-                setCookie("socketid", socket.id);
-            });
+        socket.on("connect", () => {
+            setCookie("socketid", socket.id);
+        });
 
-            socket.on("new_notice", (data) => {
-                console.log(data);
-                toast.success(data.message, {
-                    theme: "colored",
-                    position: "top-left",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: false,
-                    progress: undefined,
-                });
+        socket.on("new_notice", (data) => {
+            console.log(data);
+            toast.success(data.message, {
+                theme: "colored",
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                progress: undefined,
             });
+        });
 
-            socket.on("connect_error", () => {
-                setTimeout(() => socket.connect(), 5000);
-            });
-        }
-    }, [currentUser]);
+        socket.on("connect_error", () => {
+            setTimeout(() => socket.connect(), 5000);
+        });
+    }, []);
 
     return (
         <DocsProvider>

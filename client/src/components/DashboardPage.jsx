@@ -9,6 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useXhr } from "../hooks/useXhr";
 import { useDocs } from "../contexts/DocsContext";
 import Loading from "./Loading";
+import { toast } from "react-toastify";
 
 const DashboardPage = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -62,6 +63,17 @@ const DashboardPage = () => {
             setLoading(false);
             setShouldGetDocs(false);
         }
+
+        toast.success("Fetched all docs", {
+            theme: "colored",
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+        });
 
         return () => {
             setLoading(false);
