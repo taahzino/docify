@@ -50,6 +50,10 @@ io.on("connect", (socket) => {
 });
 
 // Middlewares
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+});
 app.use(
     cors({
         origin: ORIGINS,
