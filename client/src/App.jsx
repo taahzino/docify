@@ -44,7 +44,11 @@ const App = () => {
     }, [profileRequest]);
 
     useEffect(() => {
-        const socket = io(process.env.REACT_APP_SERVER_URL);
+        const serverurl = process.env.REACT_APP_SERVER_URL;
+
+        const socket = io(serverurl);
+
+        console.log(socket);
 
         socket.on("connect", () => {
             setCookie("socketid", socket.id);
@@ -53,7 +57,7 @@ const App = () => {
         socket.on("new_notice", (data) => {
             console.log(data);
             toast.success(data.message, {
-                theme: "colored",
+                theme: "dark",
                 position: "top-left",
                 autoClose: 5000,
                 hideProgressBar: false,

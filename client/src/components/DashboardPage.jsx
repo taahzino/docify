@@ -60,20 +60,19 @@ const DashboardPage = () => {
                     payload,
                 });
             }
+            toast("Fetched all docs", {
+                theme: "dark",
+                position: "top-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                progress: undefined,
+            });
             setLoading(false);
             setShouldGetDocs(false);
         }
-
-        toast.success("Fetched all docs", {
-            theme: "colored",
-            position: "top-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-        });
 
         return () => {
             setLoading(false);
