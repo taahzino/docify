@@ -41,7 +41,7 @@ const io = socketIo(server, {
 
 global.io = io;
 
-io.on("connection", (socket) => {
+io.on("connect", (socket) => {
     socket.join(`NOTIFICATION_ROOM_${socket.id}`);
 
     io.to(`NOTIFICATION_ROOM_${socket.id}`).emit("new_notice", {

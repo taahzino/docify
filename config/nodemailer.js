@@ -26,6 +26,15 @@ const verifyNodeMailer = () => {
 };
 
 const sendMail = ({ to, subject, text, filename, user }, callback) => {
+    let attachments = [];
+    if (filename) {
+        attachments.push({
+            filename,
+            content: fs.createReadStream(
+                path.join(__dirname, `../uploads/${filename}`)
+            ),
+        });
+    }
     transporter.sendMail(
         {
             from: `Docify <${process.env.EMAILUSER}>`,
@@ -33,14 +42,7 @@ const sendMail = ({ to, subject, text, filename, user }, callback) => {
             subject,
             text,
             html: `<div>${text}</div> <hr /> <div><i>This email was sent using <b>Docify</b> App by ${user.name} - <b>${user.email}</b></i></div>`,
-            attachments: [
-                {
-                    filename,
-                    content: fs.createReadStream(
-                        path.join(__dirname, `../uploads/${filename}`)
-                    ),
-                },
-            ],
+            attachments,
         },
         callback
     );
