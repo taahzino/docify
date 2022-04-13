@@ -2,18 +2,23 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { setToken } from "../utils/setToken";
+import { setCookie } from "../utils/setCookie";
+import Cookies from "universal-cookie";
 
 export const useXhr = (shouldRequest, method, url, data = {}) => {
     const [result, setResult] = useState();
     const [isFetched, setIsFetched] = useState(false);
     const { Authorization, logout } = useAuth();
 
+    const cookies = new Cookies();
+
+    const socketid = cookies.get("socketid");
+
     useEffect(() => {
         if (shouldRequest) {
             if (method === "get" || method === "delete") {
                 axios[method](url, {
-                    headers: { Authorization },
+                    headers: { Authorization, socketid },
                 })
                     .then((response) => {
                         setResult({
@@ -22,7 +27,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                         });
 
                         if (response.data.token) {
-                            setToken(response.data.token);
+                            setCookie("token", response.data.token);
                         }
                     })
                     .catch((error) => {
@@ -48,14 +53,14 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                     url,
                     { ...data },
                     {
-                        headers: { Authorization },
+                        headers: { Authorization, socketid },
                     }
                 )
                     .then((response) => {
                         setResult({ type: "success", ...response });
 
                         if (response.data.token) {
-                            setToken(response.data.token);
+                            setCookie("token", response.data.token);
                         }
                     })
                     .catch((error) => {

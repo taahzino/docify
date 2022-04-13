@@ -11,9 +11,12 @@ import { useAuth } from "./contexts/AuthContext.jsx";
 import { DocsProvider } from "./contexts/DocsContext.jsx";
 import "./styles/global.css";
 import NotFoundPage from "./components/NotFoundPage.jsx";
+import { io } from "socket.io-client";
+import { setCookie } from "./utils/setCookie.jsx";
+import { ToastContainer, toast } from "react-toastify";
 
 const App = () => {
-    const { setCurrentUser } = useAuth();
+    const { currentUser, setCurrentUser } = useAuth();
     const [shouldGetMe, setShouldGetMe] = useState(false);
 
     const profileRequest = useXhr(
@@ -23,7 +26,9 @@ const App = () => {
     );
 
     useEffect(() => {
-        setShouldGetMe(true);
+        if (!currentUser || currentUser._id) {
+            setShouldGetMe(true);
+        }
 
         return () => {
             setShouldGetMe(false);
@@ -37,6 +42,33 @@ const App = () => {
 
         return () => {};
     }, [profileRequest]);
+
+    useEffect(() => {
+        if (currentUser && currentUser._id) {
+            const socket = io(process.env.REACT_APP_SERVER_URL);
+
+            socket.on("connect", () => {
+                setCookie("socketid", socket.id);
+            });
+
+            socket.on("new_notice", (data) => {
+                toast.success(data.message, {
+                    theme: "colored",
+                    position: "top-left",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                });
+            });
+
+            socket.on("connect_error", () => {
+                setTimeout(() => socket.connect(), 5000);
+            });
+        }
+    }, [currentUser]);
 
     return (
         <DocsProvider>
@@ -58,6 +90,7 @@ const App = () => {
                     </Switch>
                 </Layout>
             </Router>
+            <ToastContainer />
         </DocsProvider>
     );
 };

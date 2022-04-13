@@ -13,7 +13,7 @@ const DocActions = ({ show, doc, setDocAction, setShowActions }) => {
                     rel="noopener noreferrer"
                     className={`${classes.option}`}
                 >
-                    <i class="bi bi-box-arrow-up-right"></i>
+                    <i className="bi bi-box-arrow-up-right"></i>
                     <span className="ms-2">Open</span>
                 </a>
                 <a href={download} className={`${classes.option}`}>

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { setToken } from "../utils/setToken";
+import { setCookie } from "../utils/setCookie";
 
 const AuthContext = React.createContext();
 
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                 }
             );
 
-            setToken(response.data.token);
+            setCookie("token", response.data.token);
 
             const user = response.data.user;
 
@@ -77,41 +77,14 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const getMe = async () => {
-        try {
-            const response = await axios.get(
-                `${process.env.REACT_APP_SERVER_URL}/api/users/me`,
-                {
-                    headers: { Authorization },
-                }
-            );
-
-            setCurrentUser(response.data.user);
-
-            return {
-                type: "success",
-                ...response,
-            };
-        } catch (error) {
-            logout();
-        }
-    };
-
     const value = {
         signup,
         login,
         logout,
-        getMe,
         Authorization,
         currentUser,
         setCurrentUser,
     };
-
-    useEffect(() => {
-        (async () => {
-            await getMe();
-        })();
-    }, []);
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
