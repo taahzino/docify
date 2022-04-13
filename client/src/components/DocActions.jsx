@@ -7,6 +7,15 @@ const DocActions = ({ show, doc, setDocAction, setShowActions }) => {
     return (
         <div>
             <div className={`${classes.options} ${show ? classes.show : null}`}>
+                <a
+                    href={`${process.env.REACT_APP_SERVER_URL}/api/docs/${doc._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${classes.option}`}
+                >
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    <span className="ms-2">Open</span>
+                </a>
                 <a href={download} className={`${classes.option}`}>
                     <i className="bi bi-download"></i>
                     <span className="ms-2">Download</span>

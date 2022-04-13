@@ -3,6 +3,7 @@ import { Lightbox } from "react-modal-image";
 import classes from "../styles/GalleryItem.module.css";
 import moment from "moment";
 import DocActions from "./DocActions";
+import NoPreview from "./NoPreview";
 
 const GalleryItem = ({ doc, setDocAction }) => {
     const [showModal, setShowModal] = useState();
@@ -62,23 +63,30 @@ const GalleryItem = ({ doc, setDocAction }) => {
                             ></i>
                         </div>
                     </div>
-                    <div className={`${classes.thumbnail_container}`}>
-                        <img
-                            src={
-                                doc.mimetype !== "application/pdf"
-                                    ? thumbnail
-                                    : "./img_placeholder.png"
-                            }
-                            alt={doc.title}
-                            className={`${classes.thumbnail}`}
-                            onClick={
-                                doc.mimetype !== "application/pdf"
-                                    ? () => {
-                                          openModal(thumbnail, doc.title);
-                                      }
-                                    : () => {}
-                            }
-                        />
+                    <div
+                        className={`${classes.thumbnail_container}`}
+                        role="button"
+                    >
+                        {doc.mimetype !== "application/pdf" ? (
+                            <img
+                                src={
+                                    doc.mimetype !== "application/pdf"
+                                        ? thumbnail
+                                        : "./img_placeholder.png"
+                                }
+                                alt={doc.title}
+                                className={`${classes.thumbnail}`}
+                                onClick={
+                                    doc.mimetype !== "application/pdf"
+                                        ? () => {
+                                              openModal(thumbnail, doc.title);
+                                          }
+                                        : () => {}
+                                }
+                            />
+                        ) : (
+                            <NoPreview />
+                        )}
                     </div>
                     <h5 className={`my-2`}>{doc.title}</h5>
                 </div>
