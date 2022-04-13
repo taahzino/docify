@@ -19,19 +19,20 @@ const verifyNodeMailer = () => {
             console.log(error);
             process.exit(1);
         } else {
+            global.nodemailerStatus = "on";
             console.log("Nodemailer is ready send our messages");
         }
     });
 };
 
-const sendMail = ({ to, subject, text, filename }, callback) => {
+const sendMail = ({ to, subject, text, filename, user }, callback) => {
     transporter.sendMail(
         {
             from: `Docify <${process.env.EMAILUSER}>`,
             to,
             subject,
             text,
-            html: `<div>${text}</div>`,
+            html: `<div>${text}</div> <hr /> <div><i>This email was sent using <b>Docify</b> App by ${user.name} - <b>${user.email}</b></i></div>`,
             attachments: [
                 {
                     filename,

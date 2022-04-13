@@ -1,10 +1,12 @@
 const { uploader } = require("../utils/uploader");
 
 const Doc = require("../models/docModel");
+const Mail = require("../models/mailModel");
 const path = require("path");
 const fs = require("fs");
 const { sendMail } = require("../config/nodemailer");
 const validator = require("validator");
+const { emailSender } = require("../workers/emailSender");
 
 const getAllDocs = async (req, res) => {
     try {
@@ -81,27 +83,23 @@ const mailADoc = async (req, res) => {
                 ? req.body.message
                 : "";
 
+        const mail = await Mail.create({
+            receiver,
+            subject,
+            filename: doc.filename,
+            message,
+            user: user._id,
+            socketid: res.locals.socketid,
+        });
+
+        emailSender.emit("send_new_email", { mail, user });
+
         res.status(200).json({
             message: "Your document will be sent in a minute!",
             doc,
         });
-
-        sendMail(
-            {
-                to: receiver,
-                subject,
-                text: `${message}<div><i>This email was sent using <b>Docify</b> App by: <b>${user.email}</b></i></div>`,
-                filename: doc.filename,
-            },
-            (err, info) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(info);
-                }
-            }
-        );
     } catch (error) {
+        console.log(error.message);
         const statusCode = res.statusCode || 500;
         res.status(statusCode).json({
             message: error.message,

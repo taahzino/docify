@@ -21,7 +21,13 @@ const authGuard = asyncHandler(async (req, res, next) => {
 
         const COOKIE_TOKEN = req.cookies.token;
 
+        const COOKIE_SOCKET_ID = req.cookies.socketid;
+
+        const HEADER_SOCKET_ID = req.headers.socketid;
+
         const JWT = SERVER_TOKEN || CLIENT_TOKEN || COOKIE_TOKEN;
+
+        const SOCKET_ID = COOKIE_SOCKET_ID || HEADER_SOCKET_ID;
 
         const decoded = jwt.verify(JWT, process.env.JWT_SECRET_KEY);
 
@@ -32,6 +38,8 @@ const authGuard = asyncHandler(async (req, res, next) => {
         user.password = undefined;
 
         res.locals.user = user;
+
+        res.locals.socketid = SOCKET_ID;
 
         const exp = parseInt(decoded.exp.toString() + "000");
 

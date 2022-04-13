@@ -5,6 +5,8 @@ const colors = require("colors");
 const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const socketIo = require("socket.io");
+const http = require("http");
 
 // Configure dotenv
 dotenv.config();
@@ -19,23 +21,34 @@ verifyNodeMailer();
 
 // Internal Modules
 const { errorHandler } = require("./middlewares/errorMiddleware");
+const { emailSender } = require("./workers/emailSender");
 
 // Get Environment Vairables
 const { PORT } = process.env;
+const ORIGINS = process.env.ORIGINS.split("_");
 
 // Create Express App
 const app = express();
 
+// Create http server
+const server = http.createServer(app);
+
+const io = socketIo(server, {
+    cors: {
+        origin: ORIGINS,
+    },
+});
+
+global.io = io;
+
+io.on("connection", (socket) => {
+    socket.join(`NOTIFICATION_ROOM_${socket.id}`);
+});
+
 // Middlewares
 app.use(
     cors({
-        origin: [
-            "http://localhost:8080",
-            "http://localhost:3000",
-            "http://localhost:3000",
-            "http://docify.devtahsin.com",
-            "https://docify.devtahsin.com",
-        ],
+        origin: ORIGINS,
         optionsSuccessStatus: 200,
     })
 );
@@ -44,13 +57,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Routes
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/docs", require("./routes/docRoutes"));
+app.use("/api", require("./routes/apiRoutes"));
 app.use("/", express.static(path.join(__dirname, "./client/build/")));
 app.use("/:anything", express.static(path.join(__dirname, "./client/build/")));
 app.use(errorHandler);
 
-// Start the app
-app.listen(PORT, () => {
+// Start the server
+server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
+
+    emailSender.emit("send_pending_emails");
+
+    setInterval(() => {
+        emailSender.emit("send_pending_emails");
+    }, 300000);
 });

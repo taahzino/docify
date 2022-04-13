@@ -7,7 +7,7 @@ const {
     loginUser,
     logout,
     getMe,
-    updateMe
+    updateMe,
 } = require("../controllers/userController");
 const { authGuard } = require("../middlewares/authMiddleware");
 
