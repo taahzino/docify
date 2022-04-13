@@ -52,6 +52,7 @@ const App = () => {
             });
 
             socket.on("new_notice", (data) => {
+                console.log(data);
                 toast.success(data.message, {
                     theme: "colored",
                     position: "top-left",
