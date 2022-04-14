@@ -49,6 +49,11 @@ const authGuard = asyncHandler(async (req, res, next) => {
             const newToken = generateToken(res);
             res.locals.token = newToken;
         } else {
+            res.cookie(process.env.LOGIN_COOKIE_NAME, JWT, {
+                maxAge: exp - Date.now(),
+                httpOnly: true,
+                signed: true,
+            });
             res.locals.token = JWT;
         }
 

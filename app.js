@@ -44,9 +44,9 @@ global.io = io;
 io.on("connect", (socket) => {
     socket.join(`NOTIFICATION_ROOM_${socket.id}`);
 
-    io.to(`NOTIFICATION_ROOM_${socket.id}`).emit("new_notice", {
-        message: "Realtime notification activated",
-    });
+    // io.to(`NOTIFICATION_ROOM_${socket.id}`).emit("new_notice", {
+    //     message: "Realtime notification activated",
+    // });
 });
 
 // Middlewares

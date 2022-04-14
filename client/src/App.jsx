@@ -55,11 +55,10 @@ const App = () => {
         });
 
         socket.on("new_notice", (data) => {
-            console.log(data);
             toast.success(data.message, {
                 theme: "dark",
-                position: "top-left",
-                autoClose: 5000,
+                position: "bottom-left",
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

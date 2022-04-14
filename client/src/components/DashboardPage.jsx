@@ -62,8 +62,8 @@ const DashboardPage = () => {
             }
             toast("Fetched all docs", {
                 theme: "dark",
-                position: "top-left",
-                autoClose: 1000,
+                position: "bottom-left",
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
