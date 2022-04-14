@@ -6,6 +6,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { AuthProvider } from "./contexts/AuthContext.jsx";
+import "./styles/global.css";
 import "./fonts/VarelaRound.css";
 import "./fonts/Ubuntu.css";
 

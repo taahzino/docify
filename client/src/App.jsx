@@ -9,11 +9,9 @@ import GuestRoute from "./components/GuestRoute.jsx";
 import { useXhr } from "./hooks/useXhr.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { DocsProvider } from "./contexts/DocsContext.jsx";
-import "./styles/global.css";
+import { ActionsProvider } from "./contexts/ActionsContext.jsx";
 import NotFoundPage from "./components/NotFoundPage.jsx";
-import { io } from "socket.io-client";
-import { setCookie } from "./utils/setCookie.jsx";
-import { ToastContainer, toast } from "react-toastify";
+import NotificationRoom from "./components/NotificationRoom.jsx";
 
 const App = () => {
     const { currentUser, setCurrentUser } = useAuth();
@@ -43,57 +41,35 @@ const App = () => {
         return () => {};
     }, [profileRequest]);
 
-    useEffect(() => {
-        const serverurl = process.env.REACT_APP_SERVER_URL;
-
-        const socket = io(serverurl);
-
-        console.log(socket);
-
-        socket.on("connect", () => {
-            setCookie("socketid", socket.id);
-        });
-
-        socket.on("new_notice", (data) => {
-            toast.success(data.message, {
-                theme: "dark",
-                position: "bottom-left",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-            });
-        });
-
-        socket.on("connect_error", () => {
-            setTimeout(() => socket.connect(), 5000);
-        });
-    }, []);
-
     return (
-        <DocsProvider>
-            <Router>
-                <Layout>
-                    <Switch>
-                        <PrivateRoute
-                            exact
-                            path="/"
-                            component={DashboardPage}
-                        />
-                        <GuestRoute exact path="/login" component={LoginPage} />
-                        <GuestRoute
-                            exact
-                            path="/signup"
-                            component={SignupPage}
-                        />
-                        <Route component={NotFoundPage} />
-                    </Switch>
-                </Layout>
-            </Router>
-            <ToastContainer />
-        </DocsProvider>
+        <NotificationRoom>
+            <DocsProvider>
+                <ActionsProvider>
+                    <Router>
+                        <Layout>
+                            <Switch>
+                                <PrivateRoute
+                                    exact
+                                    path="/"
+                                    component={DashboardPage}
+                                />
+                                <GuestRoute
+                                    exact
+                                    path="/login"
+                                    component={LoginPage}
+                                />
+                                <GuestRoute
+                                    exact
+                                    path="/signup"
+                                    component={SignupPage}
+                                />
+                                <Route component={NotFoundPage} />
+                            </Switch>
+                        </Layout>
+                    </Router>
+                </ActionsProvider>
+            </DocsProvider>
+        </NotificationRoom>
     );
 };
 

@@ -5,12 +5,14 @@ import { useXhr } from "../hooks/useXhr";
 import AlertComponent from "./Alert";
 import Loading from "./Loading";
 
-const DeleteDocModal = ({ show, handleClose: closeModal, thumbnail, doc }) => {
+const DeleteDocModal = ({ show, handleClose: closeModal, doc }) => {
     const [errorMessage, setErrorMessage] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
 
     const [shouldDelete, setShouldDelete] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const thumbnail = `${process.env.REACT_APP_SERVER_URL}/api/docs/${doc._id}`;
 
     const { dispatchDocs } = useDocs();
 

@@ -1,8 +1,11 @@
 import React from "react";
+import { useActions } from "../contexts/ActionsContext";
 import classes from "../styles/Options.module.css";
 
-const DocActions = ({ show, doc, setDocAction, setShowActions }) => {
+const DocActions = ({ show, doc }) => {
     const download = `${process.env.REACT_APP_SERVER_URL}/api/docs/download/${doc._id}`;
+
+    const { setDocAction } = useActions();
 
     return (
         <div>

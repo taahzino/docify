@@ -5,7 +5,7 @@ import moment from "moment";
 import DocActions from "./DocActions";
 import NoPreview from "./NoPreview";
 
-const GalleryItem = ({ doc, setDocAction }) => {
+const GalleryItem = ({ doc }) => {
     const [showModal, setShowModal] = useState();
     const [modalSrc, setModalSrc] = useState();
     const [modalTitle, setModalTitle] = useState();
@@ -45,11 +45,7 @@ const GalleryItem = ({ doc, setDocAction }) => {
                             {moment(doc.createdAt).format("DD MMMM YYYY")}
                         </div>
 
-                        <DocActions
-                            show={showActions}
-                            doc={doc}
-                            setDocAction={setDocAction}
-                        />
+                        <DocActions show={showActions} doc={doc} />
 
                         <div
                             onClick={() => {
