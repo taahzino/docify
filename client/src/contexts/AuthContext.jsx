@@ -23,6 +23,9 @@ export const AuthProvider = ({ children }) => {
                 {
                     email,
                     password,
+                },
+                {
+                    withCredentials: true,
                 }
             );
 
@@ -62,6 +65,9 @@ export const AuthProvider = ({ children }) => {
                     phone,
                     password,
                     password2,
+                },
+                {
+                    withCredentials: true,
                 }
             );
 

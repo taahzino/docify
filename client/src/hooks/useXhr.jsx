@@ -19,6 +19,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
             if (method === "get" || method === "delete") {
                 axios[method](url, {
                     headers: { Authorization, socketid },
+                    withCredentials: true,
                 })
                     .then((response) => {
                         setResult({
@@ -54,6 +55,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
                     { ...data },
                     {
                         headers: { Authorization, socketid },
+                        withCredentials: true,
                     }
                 )
                     .then((response) => {

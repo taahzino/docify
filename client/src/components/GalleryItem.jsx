@@ -4,7 +4,6 @@ import classes from "../styles/GalleryItem.module.css";
 import moment from "moment";
 import DocActions from "./DocActions";
 import NoPreview from "./NoPreview";
-import { useXhr } from "../hooks/useXhr";
 
 const GalleryItem = ({ doc, setDocAction }) => {
     const [showModal, setShowModal] = useState();
@@ -15,7 +14,6 @@ const GalleryItem = ({ doc, setDocAction }) => {
     const download = `${process.env.REACT_APP_SERVER_URL}/api/docs/download/${doc._id}`;
 
     const [showActions, setShowActions] = useState(false);
-    const [shouldRequest, setShouldRequest] = useState(false);
 
     const openModal = (thumbnail, title) => {
         setShowModal(true);
@@ -25,8 +23,6 @@ const GalleryItem = ({ doc, setDocAction }) => {
 
     const dotsRef = useRef();
 
-    const imgSrc = useXhr(shouldRequest, "get", thumbnail);
-
     useEffect(() => {
         window.addEventListener("click", (e) => {
             if (e.target !== dotsRef.current) {
@@ -35,14 +31,6 @@ const GalleryItem = ({ doc, setDocAction }) => {
         });
 
         return () => {};
-    }, []);
-
-    useEffect(() => {
-        setShouldRequest(true);
-
-        return () => {
-            setShouldRequest(false);
-        };
     }, []);
 
     return (
@@ -79,7 +67,8 @@ const GalleryItem = ({ doc, setDocAction }) => {
                         className={`${classes.thumbnail_container}`}
                         role="button"
                     >
-                        {doc.mimetype !== "application/pdf" ? (
+                        {doc.mimetype === "application/pdf" && <NoPreview />}
+                        {doc.mimetype !== "application/pdf" && (
                             <img
                                 src={thumbnail}
                                 alt={doc.title}
@@ -93,8 +82,6 @@ const GalleryItem = ({ doc, setDocAction }) => {
                                         : () => {}
                                 }
                             />
-                        ) : (
-                            <NoPreview />
                         )}
                     </div>
                     <h5 className={`my-2`}>{doc.title}</h5>
