@@ -52,6 +52,10 @@ io.on("connect", (socket) => {
 // Middlewares
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Credentials", true);
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization, Access-Control-Allow-Methods, Access-Control-Allow-Credentials, Access-Control-Allow-Origin, Access-Control-Allow-Headers, *"
+    );
     next();
 });
 app.use(
