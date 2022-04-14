@@ -1,10 +1,8 @@
 // Dependencies
 const jwt = require("jsonwebtoken");
-const lodash = require("lodash");
 const asyncHandler = require("express-async-handler");
 
 // Modules
-const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
 
 // Functions
@@ -31,13 +29,7 @@ const authGuard = asyncHandler(async (req, res, next) => {
 
         const decoded = jwt.verify(JWT, process.env.JWT_SECRET_KEY);
 
-        const doc = await User.findById(decoded._id).select("-password");
-
-        const user = lodash.cloneDeep(doc.toObject());
-
-        user.password = undefined;
-
-        res.locals.user = user;
+        res.locals.user = decoded;
 
         res.locals.socketid = SOCKET_ID;
 
