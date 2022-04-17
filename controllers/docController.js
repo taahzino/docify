@@ -142,7 +142,7 @@ const downloadADoc = (req, res) => {
 };
 
 const deleteADoc = async (req, res) => {
-    await Doc.deleteOne({ id: res.locals.doc._id });
+    await Doc.deleteOne({ _id: res.locals.doc._id });
 
     fs.unlinkSync(
         path.join(__dirname, "../uploads/" + res.locals.doc.filename)
