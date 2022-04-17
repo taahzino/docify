@@ -5,7 +5,7 @@ const colors = require("colors");
 const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const socketIo = require("socket.io");
+const socketIo = require("socket.io")
 const http = require("http");
 
 // Configure dotenv
