@@ -1,10 +1,8 @@
 const { uploader } = require("../utils/uploader");
-
 const Doc = require("../models/docModel");
 const Mail = require("../models/mailModel");
 const path = require("path");
 const fs = require("fs");
-const { sendMail } = require("../config/nodemailer");
 const validator = require("validator");
 const { emailSender } = require("../workers/emailSender");
 
@@ -48,9 +46,15 @@ const saveDoc = async (req, res) => {
 };
 
 const getADoc = (req, res) => {
-    res.status(200).sendFile(
-        path.join(__dirname, "../uploads/" + res.locals.doc.filename)
-    );
+    try {
+        res.status(200).sendFile(
+            path.join(__dirname, "../uploads/" + res.locals.doc.filename)
+        );
+    } catch (error) {
+        res.status(500).json({
+            message: "Something wrong happened!",
+        });
+    }
 };
 
 const mailADoc = async (req, res) => {
@@ -138,7 +142,7 @@ const downloadADoc = (req, res) => {
 };
 
 const deleteADoc = async (req, res) => {
-    await Doc.findByIdAndDelete(res.locals.doc._id);
+    await Doc.deleteOne({ id: res.locals.doc._id });
 
     fs.unlinkSync(
         path.join(__dirname, "../uploads/" + res.locals.doc.filename)
