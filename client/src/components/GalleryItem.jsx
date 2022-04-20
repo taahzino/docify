@@ -4,6 +4,7 @@ import classes from "../styles/GalleryItem.module.css";
 import moment from "moment";
 import DocActions from "./DocActions";
 import NoPreview from "./NoPreview";
+import Column from "./Column";
 
 const GalleryItem = ({ doc }) => {
     const [showModal, setShowModal] = useState();
@@ -34,7 +35,7 @@ const GalleryItem = ({ doc }) => {
     }, []);
 
     return (
-        <>
+        <Column>
             <div className={`${classes.galleryItem}`}>
                 <div className="rounded">
                     <div
@@ -94,7 +95,7 @@ const GalleryItem = ({ doc }) => {
                     }}
                 />
             )}
-        </>
+        </Column>
     );
 };
 

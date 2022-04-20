@@ -12,7 +12,11 @@ export const useAuth = () => {
 export const cookies = new Cookies();
 
 export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState();
+    const [currentUser, setCurrentUser] = useState(
+        cookies.get("currentUser") && cookies.get("currentUser") !== "undefined"
+            ? cookies.get("currentUser")
+            : null
+    );
 
     const Authorization = `Bearer ${cookies.get("token")}`;
 
@@ -35,6 +39,7 @@ export const AuthProvider = ({ children }) => {
 
             if (user && user._id && user.email) {
                 setCurrentUser(user);
+                setCookie("currentUser", user);
             }
 
             return {
@@ -52,6 +57,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         cookies.remove("token");
         cookies.remove("Docify");
+        cookies.remove("currentUser");
         setCurrentUser(null);
     };
 

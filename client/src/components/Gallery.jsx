@@ -1,16 +1,16 @@
 import React from "react";
 import { uniqueId } from "lodash";
 import GalleryItem from "./GalleryItem";
-import styles from "../styles/Gallery.module.css";
+import { Row } from "react-bootstrap";
 
 const Gallery = ({ docs }) => {
     return (
         <>
-            <div className={`${styles.gallery}`}>
+            <Row>
                 {docs.map((doc) => (
                     <GalleryItem key={uniqueId() * Math.random()} doc={doc} />
                 ))}
-            </div>
+            </Row>
         </>
     );
 };

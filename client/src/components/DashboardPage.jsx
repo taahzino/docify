@@ -6,7 +6,6 @@ import Gallery from "./Gallery";
 import { useXhr } from "../hooks/useXhr";
 import { useDocs } from "../contexts/DocsContext";
 import Loading from "./Loading";
-import { toast } from "react-toastify";
 import Header from "./Header";
 
 const DashboardPage = () => {
@@ -30,16 +29,6 @@ const DashboardPage = () => {
                     payload,
                 });
             }
-            toast("Fetched all docs", {
-                theme: "dark",
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-            });
             setLoading(false);
             setShouldGetDocs(false);
         }
@@ -51,7 +40,13 @@ const DashboardPage = () => {
     }, [getAllDocs]);
 
     useEffect(() => {
-        setShouldGetDocs(true);
+        if (docs && docs.length > 0) {
+            setLoading(false);
+        }
+        if (!docs || docs.length < 1) {
+            setLoading(true);
+            setShouldGetDocs(true);
+        }
 
         return () => {
             setShouldGetDocs(false);

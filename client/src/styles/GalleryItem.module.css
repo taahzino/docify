@@ -1,12 +1,9 @@
 .galleryItem {
     box-sizing: border-box;
     background-color: #2b2f3e;
-    margin: 10px;
     width: 100%;
-    max-width: 300px;
     border-radius: 5px;
     padding: 5px 10px;
-
     position: relative;
 }
 
