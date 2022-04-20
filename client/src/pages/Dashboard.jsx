@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import classes from "../styles/Dashboard.module.css";
-import AlertComponent from "./Alert";
-import Gallery from "./Gallery";
+import AlertComponent from "../components/Alert";
+import Gallery from "../components/Gallery";
 import { useXhr } from "../hooks/useXhr";
 import { useDocs } from "../contexts/DocsContext";
-import Loading from "./Loading";
-import Header from "./Header";
+import Loading from "../components/Loading";
+import Header from "../components/Header";
 
-const DashboardPage = () => {
+const Dashboard = () => {
     const [shouldGetDocs, setShouldGetDocs] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -79,4 +79,4 @@ const DashboardPage = () => {
     );
 };
 
-export default DashboardPage;
+export default Dashboard;

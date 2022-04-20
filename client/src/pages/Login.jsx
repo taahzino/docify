@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import classes from "../styles/FormCard.module.css";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import AlertComponent from "./Alert";
+import AlertComponent from "../components/Alert";
 import { useAuth } from "../contexts/AuthContext";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
 import { useDocs } from "../contexts/DocsContext";
 
-const LoginPage = () => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -145,4 +145,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default Login;
