@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
 import Wrappers from "./components/Wrappers.jsx";
