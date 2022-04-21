@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
-import NotificationRoom from "./NotificationRoom";
-import { DocsProvider } from "../contexts/DocsContext";
-import { ActionsProvider } from "../contexts/ActionsContext";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useXhr } from "../hooks/useXhr";
 import { setCookie } from "../utils/setCookie";
 
-const Providers = ({ children }) => {
+const LandingRequests = ({ children }) => {
     const { currentUser, setCurrentUser } = useAuth();
     const [shouldGetMe, setShouldGetMe] = useState(false);
 
@@ -35,13 +32,7 @@ const Providers = ({ children }) => {
         return () => {};
     }, [profileRequest]);
 
-    return (
-        <NotificationRoom>
-            <DocsProvider>
-                <ActionsProvider>{children}</ActionsProvider>
-            </DocsProvider>
-        </NotificationRoom>
-    );
+    return <>{children}</>;
 };
 
-export default Providers;
+export default LandingRequests;

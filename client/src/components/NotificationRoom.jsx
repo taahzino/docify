@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { io } from "socket.io-client";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { setCookie } from "../utils/setCookie";
 
 const NotificationRoom = ({ children }) => {
@@ -31,12 +31,7 @@ const NotificationRoom = ({ children }) => {
         });
     }, []);
 
-    return (
-        <>
-            {children}
-            <ToastContainer />
-        </>
-    );
+    return <>{children}</>;
 };
 
 export default NotificationRoom;

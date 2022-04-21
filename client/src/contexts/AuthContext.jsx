@@ -13,7 +13,10 @@ export const cookies = new Cookies();
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(
-        cookies.get("currentUser") && cookies.get("currentUser") !== "undefined"
+        cookies.get("currentUser") &&
+            typeof cookies.get("currentUser") === "object" &&
+            cookies.get("currentUser")._id &&
+            cookies.get("currentUser").email
             ? cookies.get("currentUser")
             : null
     );
@@ -39,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
             if (user && user._id && user.email) {
                 setCurrentUser(user);
-                setCookie("currentUser", user);
+                setCookie("currentUser", JSON.stringify(user));
             }
 
             return {
