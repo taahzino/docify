@@ -6,6 +6,7 @@ import AlertComponent from "../components/Alert";
 import { useAuth } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import { useDocs } from "../contexts/DocsContext";
+import Body from "../components/layout/Body";
 
 const Signup = () => {
     const [username, setUsername] = useState("");
@@ -89,8 +90,8 @@ const Signup = () => {
     }, [filledUp]);
 
     return (
-        <>
-            <Container className="my-2 rounded d-flex align-items-center justify-content-center">
+        <Body>
+            <Container className="py-4 rounded d-flex align-items-center justify-content-center">
                 <Form
                     className={`${classes.formCard} bg-white p-4 rounded`}
                     onSubmit={submitHandler}
@@ -183,7 +184,7 @@ const Signup = () => {
                     </Button>
                 </Form>
             </Container>
-        </>
+        </Body>
     );
 };
 

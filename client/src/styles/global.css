@@ -1,6 +1,35 @@
+@import url("https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css");
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Ubuntu", sans-serif;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    /* ===== Colors ===== */
+    --body-color: #18191a;
+    --sidebar-color: #242526;
+    --primary-color: #3a3b3c;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+
+    /* ====== Transition ====== */
+    --tran-02: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.4s ease;
+    --tran-05: all 0.5s ease;
+}
+
+body {
+    background-color: #18191a;
+    min-height: 100vh;
+    height: 100%;
+    max-height: auto;
+}
+
+.sidebar.close .text {
+    opacity: 0;
 }

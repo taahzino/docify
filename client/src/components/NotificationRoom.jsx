@@ -15,13 +15,13 @@ const NotificationRoom = ({ children }) => {
 
         socket.on("new_notice", (data) => {
             toast.success(data.message, {
-                theme: "dark",
-                position: "bottom-left",
+                theme: "colored",
+                position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: false,
+                draggable: true,
                 progress: undefined,
             });
         });

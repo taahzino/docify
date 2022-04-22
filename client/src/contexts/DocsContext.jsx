@@ -13,14 +13,15 @@ const reducer = (state, action) => {
         case "load":
             return [...state, ...action.payload];
         case "create":
-            return [...state, action.doc];
+            return [action.doc, ...state];
         case "update":
-            return state.map((doc) => {
-                if (doc._id !== action.payload._id) {
-                    return doc;
-                }
-                return action.payload;
-            });
+            return [
+                action.payload,
+                ...state.filter(
+                    (doc) =>
+                        doc._id.toString() !== action.payload._id.toString()
+                ),
+            ];
         case "delete":
             return state.filter(
                 (doc) => doc._id.toString() !== action.docId.toString()

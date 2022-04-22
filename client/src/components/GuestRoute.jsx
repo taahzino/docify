@@ -8,7 +8,7 @@ function GuestUser({ component: Component, ...rest }) {
     return currentUser ? (
         <Redirect to="/" />
     ) : (
-        <Route {...rest}>{props => <Component {...props} />}</Route>
+        <Route {...rest}>{(props) => <Component {...props} />}</Route>
     );
 }
 

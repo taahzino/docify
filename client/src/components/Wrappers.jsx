@@ -2,22 +2,22 @@ import React from "react";
 import NotificationRoom from "./NotificationRoom";
 import { DocsProvider } from "../contexts/DocsContext";
 import { ActionsProvider } from "../contexts/ActionsContext";
-import Layout from "./Layout";
 import LandingRequests from "./LandingRequests";
-import { ToastContainer } from "react-bootstrap";
+import { ToastContainer } from "react-toastify";
+import Body from "./layout/Body";
 
 const Wrappers = ({ children }) => {
     return (
         <>
-            <LandingRequests>
-                <NotificationRoom>
-                    <DocsProvider>
+            <DocsProvider>
+                <LandingRequests>
+                    <NotificationRoom>
                         <ActionsProvider>
-                            <Layout>{children}</Layout>
+                            <Body>{children}</Body>
                         </ActionsProvider>
-                    </DocsProvider>
-                </NotificationRoom>
-            </LandingRequests>
+                    </NotificationRoom>
+                </LandingRequests>
+            </DocsProvider>
             <ToastContainer />
         </>
     );
