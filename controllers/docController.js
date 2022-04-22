@@ -8,7 +8,9 @@ const { emailSender } = require("../workers/emailSender");
 
 const getAllDocs = async (req, res) => {
     try {
-        const docs = await Doc.find({ user: res.locals.user._id });
+        const docs = await Doc.find({ user: res.locals.user._id }, null, {
+            sort: { updatedAt: -1 },
+        });
         res.status(200).json({
             docs,
         });
