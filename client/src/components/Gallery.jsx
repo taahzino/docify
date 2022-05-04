@@ -1,23 +1,11 @@
 import React from "react";
 import GalleryItem from "./GalleryItem";
-import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDocs } from "../contexts/DocsContext";
+import { BeatLoader } from "react-spinners";
+import GridRow from "./GridRow";
 
-const Row = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 1rem;
-
-    @media screen and (max-width: 1040px) {
-        grid-template-columns: 1fr 1fr;
-    }
-    @media screen and (max-width: 600px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const Gallery = ({ docs }) => {
+const Gallery = ({ docs, loading }) => {
     const { hasMore, setShouldGetDocs } = useDocs();
     return (
         <InfiniteScroll
@@ -26,18 +14,26 @@ const Gallery = ({ docs }) => {
                 setShouldGetDocs(true);
             }}
             hasMore={hasMore}
-            loader={<p>Scroll to load more...</p>}
-            endMessage={
-                <p style={{ textAlign: "center" }}>
-                    <b>All documents are loaded</b>
-                </p>
+            loader={
+                !loading && (
+                    <div className="d-flex w-100 align-items-center justify-content-center mt-4">
+                        <div
+                            style={{
+                                color: "dodgerblue",
+                            }}
+                        >
+                            Loading
+                        </div>
+                        <BeatLoader size={20} color="dodgerblue" />
+                    </div>
+                )
             }
         >
-            <Row>
+            <GridRow>
                 {docs.map((doc) => (
                     <GalleryItem key={doc._id} doc={doc} />
                 ))}
-            </Row>
+            </GridRow>
         </InfiniteScroll>
     );
 };

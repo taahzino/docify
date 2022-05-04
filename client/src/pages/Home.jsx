@@ -3,6 +3,7 @@ import AlertComponent from "../components/Alert";
 import Gallery from "../components/Gallery";
 import { useDocs } from "../contexts/DocsContext";
 import Loading from "../components/Loading";
+import PageTitle from "../components/PageTitle";
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -22,7 +23,7 @@ const Home = () => {
 
     return (
         <>
-            <h2>Home</h2>
+            <PageTitle>Home</PageTitle>
             <AlertComponent
                 variant="secondary"
                 show={!loading && docs && docs.length < 1}
@@ -32,7 +33,7 @@ const Home = () => {
 
             <Loading loading={loading} text="Getting your docs" />
 
-            <Gallery docs={docs} />
+            <Gallery docs={docs} loading={loading} />
         </>
     );
 };

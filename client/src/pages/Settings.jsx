@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Form, Button } from "react-bootstrap";
 import AlertComponent from "../components/Alert";
 import Loading from "../components/Loading";
+import PageTitle from "../components/PageTitle";
 
 const Wrapper = styled.div`
     max-width: 500px;
@@ -91,7 +92,7 @@ const Settings = () => {
     }, [result]);
     return (
         <>
-            <h2>Settings</h2>
+            <PageTitle>Settings</PageTitle>
             <Wrapper>
                 <Form onSubmit={submitHandler}>
                     <AlertComponent variant="danger" show={errorMsg}>

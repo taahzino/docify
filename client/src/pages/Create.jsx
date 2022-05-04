@@ -7,6 +7,7 @@ import { useDocs } from "../contexts/DocsContext";
 import Loading from "../components/Loading";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
 
 const Wrapper = styled.div`
     max-width: 500px;
@@ -92,7 +93,7 @@ const Create = () => {
     }, [shouldRequest]);
     return (
         <Wrapper>
-            <h2>Add new document</h2>
+            <PageTitle>Add new document</PageTitle>
             <Form onSubmit={submitHandler}>
                 <AlertComponent variant="danger" show={errorMessage}>
                     {errorMessage}

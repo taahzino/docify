@@ -52,8 +52,6 @@ const GalleryItem = ({ doc }) => {
 
     const dotsRef = useRef();
 
-    console.log("Rendering" + doc._id);
-
     useEffect(() => {
         window.addEventListener("click", (e) => {
             if (e.target !== dotsRef.current) {
