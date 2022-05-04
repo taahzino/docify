@@ -90,7 +90,8 @@ const Create = () => {
         return () => {
             setShouldRequest(false);
         };
-    }, [shouldRequest]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [Authorization, file, shouldRequest, title]);
     return (
         <Wrapper>
             <PageTitle>Add new document</PageTitle>

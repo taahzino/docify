@@ -65,6 +65,7 @@ const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
         return () => {
             setShouldUpdate(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateResult]);
 
     return (

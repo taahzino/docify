@@ -49,6 +49,7 @@ const Login = () => {
     useEffect(() => {
         dispatchDocs({ type: "unload" });
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -84,7 +85,8 @@ const Login = () => {
         return () => {
             setFilledUp(false);
         };
-    }, [filledUp]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [email, filledUp, history, password]);
 
     return (
         <Body>

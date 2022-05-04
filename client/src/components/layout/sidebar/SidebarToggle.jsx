@@ -29,7 +29,7 @@ const SidebarToggle = () => {
 
     return (
         <Icon
-            className={`bx bx-chevron-${sidebarToggle ? "right" : "left"}`}
+            className={`bx bx-chevron-${sidebarToggle ? "left" : "right"}`}
             onClick={toggle}
         ></Icon>
     );

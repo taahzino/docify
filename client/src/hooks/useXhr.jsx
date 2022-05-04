@@ -89,6 +89,7 @@ export const useXhr = (shouldRequest, method, url, data = {}) => {
         return () => {
             setIsFetched(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldRequest]);
 
     return isFetched && result;

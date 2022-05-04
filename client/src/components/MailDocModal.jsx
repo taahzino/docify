@@ -82,6 +82,7 @@ const MailDocModal = ({ show, handleClose: closeModal, doc }) => {
         return () => {
             setShouldRequest(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sendDocResult]);
 
     return (

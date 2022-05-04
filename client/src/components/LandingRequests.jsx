@@ -21,7 +21,7 @@ const LandingRequests = ({ children }) => {
         return () => {
             setShouldGetMe(false);
         };
-    }, []);
+    }, [currentUser]);
 
     useEffect(() => {
         if (profileRequest && profileRequest.data) {
@@ -30,6 +30,7 @@ const LandingRequests = ({ children }) => {
         }
 
         return () => {};
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [profileRequest]);
 
     return <>{children}</>;

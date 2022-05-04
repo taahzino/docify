@@ -54,7 +54,8 @@ const DeleteDocModal = ({ show, handleClose: closeModal, doc }) => {
             setLoading(false);
             setShouldDelete(false);
         };
-    }, [deleteDoc]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deleteDoc, doc._id]);
 
     return (
         <Modal show={show} onHide={handleClose}>
