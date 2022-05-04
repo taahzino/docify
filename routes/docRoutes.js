@@ -6,7 +6,9 @@ const { authGuard } = require("../middlewares/authMiddleware");
 const {
     saveDoc,
     getAllDocs,
+    getLimitedDocs,
     getADoc,
+    getDocData,
     downloadADoc,
     deleteADoc,
     editADoc,
@@ -23,6 +25,8 @@ router.use(authGuard);
 
 router.post("/", saveDoc);
 router.get("/", getAllDocs);
+router.get("/limit/:skip/:limit", getLimitedDocs);
+router.get("/data/:id", checkDocAccess, getDocData);
 router.get("/:id", checkDocAccess, getADoc);
 router.delete("/:id", checkDocAccess, deleteADoc);
 router.put("/:id", checkDocAccess, updateDocValidation, editADoc);

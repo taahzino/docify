@@ -21,6 +21,23 @@ const getAllDocs = async (req, res) => {
     }
 };
 
+const getLimitedDocs = async (req, res) => {
+    try {
+        const docs = await Doc.find({ user: res.locals.user._id }, null, {
+            sort: { updatedAt: -1 },
+            skip: req.params.skip,
+            limit: req.params.limit,
+        });
+        res.status(200).json({
+            docs,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Something wrong happened!",
+        });
+    }
+};
+
 const saveDoc = async (req, res) => {
     uploader.single("document")(req, res, async (err) => {
         try {
@@ -52,6 +69,18 @@ const getADoc = (req, res) => {
         res.status(200).sendFile(
             path.join(__dirname, "../uploads/" + res.locals.doc.filename)
         );
+    } catch (error) {
+        res.status(500).json({
+            message: "Something wrong happened!",
+        });
+    }
+};
+
+const getDocData = (req, res) => {
+    try {
+        res.status(200).json({
+            doc: res.locals.doc,
+        });
     } catch (error) {
         res.status(500).json({
             message: "Something wrong happened!",
@@ -158,7 +187,9 @@ const deleteADoc = async (req, res) => {
 module.exports = {
     saveDoc,
     getAllDocs,
+    getLimitedDocs,
     getADoc,
+    getDocData,
     downloadADoc,
     deleteADoc,
     editADoc,
