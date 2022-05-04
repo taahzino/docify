@@ -1,7 +1,8 @@
 import React from "react";
-import { uniqueId } from "lodash";
 import GalleryItem from "./GalleryItem";
 import styled from "styled-components";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDocs } from "../contexts/DocsContext";
 
 const Row = styled.div`
     display: grid;
@@ -17,12 +18,27 @@ const Row = styled.div`
 `;
 
 const Gallery = ({ docs }) => {
+    const { hasMore, setShouldGetDocs } = useDocs();
     return (
-        <Row>
-            {docs.map((doc) => (
-                <GalleryItem key={uniqueId() * Math.random()} doc={doc} />
-            ))}
-        </Row>
+        <InfiniteScroll
+            dataLength={docs.length}
+            next={() => {
+                setShouldGetDocs(true);
+            }}
+            hasMore={hasMore}
+            loader={<p>Scroll to load more...</p>}
+            endMessage={
+                <p style={{ textAlign: "center" }}>
+                    <b>All documents are loaded</b>
+                </p>
+            }
+        >
+            <Row>
+                {docs.map((doc) => (
+                    <GalleryItem key={doc._id} doc={doc} />
+                ))}
+            </Row>
+        </InfiniteScroll>
     );
 };
 

@@ -27,7 +27,7 @@ const Create = () => {
 
     const history = useHistory();
 
-    const { dispatchDocs } = useDocs();
+    const { dispatchDocs, deleteSome } = useDocs();
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -68,6 +68,7 @@ const Create = () => {
                             type: "create",
                             doc: response.data.doc,
                         });
+                        deleteSome();
                         setTimeout(() => {
                             setSuccessMessage(null);
                             history.push("/");
