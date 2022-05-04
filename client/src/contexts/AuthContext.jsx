@@ -50,6 +50,14 @@ export const AuthProvider = ({ children }) => {
                 ...response,
             };
         } catch (error) {
+            if (error.message === "Network Error") {
+                return {
+                    type: "error",
+                    data: {
+                        message: "Something wrong happened! Try again later",
+                    },
+                };
+            }
             return {
                 type: "error",
                 ...error.response,
