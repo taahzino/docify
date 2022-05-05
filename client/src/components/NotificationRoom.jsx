@@ -13,7 +13,7 @@ const NotificationRoom = ({ children }) => {
             setCookie("socketid", socket.id);
         });
 
-        socket.on("new_notice", (data) => {
+        socket.on("new_notice", data => {
             toast.success(data.message, {
                 theme: "colored",
                 position: "top-right",
@@ -22,7 +22,7 @@ const NotificationRoom = ({ children }) => {
                 closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
-                progress: undefined,
+                progress: undefined
             });
         });
 
