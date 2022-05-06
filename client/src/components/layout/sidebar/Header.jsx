@@ -74,7 +74,7 @@ const SidebarHeader = () => {
 
                 <Text>
                     <LogoText>
-                        <UserName>{currentUser.name}</UserName>
+                        <UserName>{currentUser.name.split(" ")[0]}</UserName>
                         <UserTag>{currentUser.membership || "Free"}</UserTag>
                     </LogoText>
                 </Text>
