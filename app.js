@@ -25,7 +25,7 @@ const { emailSender } = require("./workers/emailSender");
 
 // Get Environment Vairables
 const { PORT } = process.env;
-const ORIGINS = process.env.ORIGINS.split("_");
+const APP_ORIGINS = process.env.APP_ORIGINS.split("_");
 
 // Create Express App
 const app = express();
@@ -35,7 +35,7 @@ const server = http.createServer(app);
 
 const io = socketIo(server, {
     cors: {
-        origin: ORIGINS,
+        origin: APP_ORIGINS,
     },
 });
 
@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 });
 app.use(
     cors({
-        origin: ORIGINS,
+        origin: APP_ORIGINS,
         optionsSuccessStatus: 200,
     })
 );
