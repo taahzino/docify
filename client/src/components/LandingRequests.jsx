@@ -16,6 +16,8 @@ const LandingRequests = ({ children }) => {
     useEffect(() => {
         if (currentUser === "undefined" || !currentUser || currentUser._id) {
             setShouldGetMe(true);
+        } else {
+            setShouldGetMe(false);
         }
 
         return () => {

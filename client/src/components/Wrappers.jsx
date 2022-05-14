@@ -9,15 +9,15 @@ import Body from "./layout/Body";
 const Wrappers = ({ children }) => {
     return (
         <>
-            <DocsProvider>
-                <LandingRequests>
+            <LandingRequests>
+                <DocsProvider>
                     <NotificationRoom>
                         <ActionsProvider>
                             <Body>{children}</Body>
                         </ActionsProvider>
                     </NotificationRoom>
-                </LandingRequests>
-            </DocsProvider>
+                </DocsProvider>
+            </LandingRequests>
             <ToastContainer />
         </>
     );
