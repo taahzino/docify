@@ -8,18 +8,15 @@ import PageTitle from "../components/PageTitle";
 const Home = () => {
     const [loading, setLoading] = useState(true);
 
-    const { docs } = useDocs();
+    const { docs, docsLoaded } = useDocs();
 
     useEffect(() => {
-        if (docs && docs.length > 0) {
+        if (docsLoaded) {
             setLoading(false);
-        }
-        if (!docs) {
-            setLoading(true);
         }
 
         return () => {};
-    }, [docs]);
+    }, [docsLoaded]);
 
     return (
         <>

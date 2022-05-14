@@ -44,6 +44,7 @@ const reducer = (state, action) => {
 export const DocsProvider = ({ children }) => {
     const [docs, dispatchDocs] = useReducer(reducer, initialDocs);
     const [shouldGetDocs, setShouldGetDocs] = useState(false);
+    const [docsLoaded, setDocsLoaded] = useState(false);
 
     const [pageNumber, setPageNumber] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -71,6 +72,7 @@ export const DocsProvider = ({ children }) => {
 
     useEffect(() => {
         if (getAllDocs && getAllDocs.type === "success") {
+            setDocsLoaded(true);
             setPageNumber((state) => state + 1);
             let payload = getAllDocs.data.docs;
             if (getAllDocs.data.docs.length > 0) {
@@ -104,6 +106,8 @@ export const DocsProvider = ({ children }) => {
         setHasMore,
         setShouldGetDocs,
         deleteSome,
+        docsLoaded,
+        setDocsLoaded
     };
     return (
         <DocsContext.Provider value={value}>{children}</DocsContext.Provider>
