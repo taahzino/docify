@@ -4,6 +4,7 @@ import moment from "moment";
 import DocActions from "./DocActions";
 import NoPreview from "./NoPreview";
 import styled from "styled-components";
+import styles from "../styles/Skeleton.module.css";
 
 const GalleryContainer = styled.div`
     background-color: var(--sidebar-color);
@@ -23,8 +24,8 @@ const GalleryHeader = styled.div`
 const ThumnailContainer = styled.div`
     border-radius: 5px;
     width: 100%;
-    height: 200px;
-    max-height: 200px;
+    height: 28vh;
+    /* max-height: 200px; */
     overflow: hidden;
 `;
 
@@ -94,6 +95,7 @@ const GalleryItem = ({ doc }) => {
                     {doc.mimetype === "application/pdf" && <NoPreview />}
                     {doc.mimetype !== "application/pdf" && (
                         <Thumbnail
+                            className={styles.skeleton}
                             src={thumbnail}
                             alt={doc.title}
                             crossOrigin="use-credentials"

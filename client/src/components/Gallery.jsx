@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GalleryItem from "./GalleryItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDocs } from "../contexts/DocsContext";
@@ -7,6 +7,11 @@ import GridRow from "./GridRow";
 
 const Gallery = ({ docs, loading }) => {
     const { hasMore, setShouldGetDocs } = useDocs();
+
+    useEffect(() => {
+        console.log(docs);
+    }, [docs]);
+
     return (
         <InfiniteScroll
             dataLength={docs.length}
@@ -15,7 +20,7 @@ const Gallery = ({ docs, loading }) => {
             }}
             hasMore={hasMore}
             loader={
-                !loading && (
+                !loading && hasMore ? (
                     <div className="d-flex w-100 align-items-center justify-content-center mt-4">
                         <div
                             style={{
@@ -26,10 +31,11 @@ const Gallery = ({ docs, loading }) => {
                         </div>
                         <BeatLoader size={20} color="dodgerblue" />
                     </div>
-                )
+                ) : null
             }
         >
             <GridRow>
+                {/* <Skeleton /> */}
                 {docs.map((doc) => (
                     <GalleryItem key={doc._id} doc={doc} />
                 ))}

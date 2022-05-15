@@ -30,7 +30,9 @@ const reducer = (state, action) => {
             );
         case "deleteSome":
             const newState = [];
-            for (let i = 0; i < action.keep; i++) {
+            let iterate =
+                action.keep <= state.length ? action.keep : state.length;
+            for (let i = 0; i < iterate; i++) {
                 newState.push(state[i]);
             }
             return newState;
@@ -64,10 +66,10 @@ export const DocsProvider = ({ children }) => {
     const deleteSome = () => {
         dispatchDocs({
             type: "deleteSome",
-            keep: 8,
+            keep: limit,
         });
         setPageNumber(1);
-        setHasMore(true);
+        setHasMore(docs.length >= limit ? true : false);
     };
 
     useEffect(() => {
@@ -81,9 +83,7 @@ export const DocsProvider = ({ children }) => {
                     payload,
                 });
             }
-            if (getAllDocs.data.docs.length < limit) {
-                setHasMore(false);
-            }
+            setHasMore(payload.length >= limit ? true : false);
             setShouldGetDocs(false);
         }
 
@@ -107,7 +107,7 @@ export const DocsProvider = ({ children }) => {
         setShouldGetDocs,
         deleteSome,
         docsLoaded,
-        setDocsLoaded
+        setDocsLoaded,
     };
     return (
         <DocsContext.Provider value={value}>{children}</DocsContext.Provider>
