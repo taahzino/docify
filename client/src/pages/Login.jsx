@@ -23,7 +23,7 @@ const Login = () => {
 
     const history = useHistory();
 
-    const { login, currentUser } = useAuth();
+    const { login } = useAuth();
 
     const { dispatchDocs } = useDocs();
 
@@ -43,7 +43,9 @@ const Login = () => {
         }
 
         setLoading(true);
-        setFilledUp(true);
+        setTimeout(() => {
+            setFilledUp(true);
+        }, 1500);
     };
 
     useEffect(() => {
@@ -68,17 +70,9 @@ const Login = () => {
                         setShowSuccess(true);
                         setSuccessMessage(result.data.message);
 
-                        setTimeout(() => {
-                            if (
-                                currentUser &&
-                                currentUser._id &&
-                                currentUser.email
-                            ) {
-                                setShowSuccess(false);
-                                setSuccessMessage(null);
-                                history.push("/");
-                            }
-                        }, 1000);
+                        setShowSuccess(false);
+                        setSuccessMessage(null);
+                        history.push("/");
                     }
                     setFilledUp(false);
                     setLoading(false);
