@@ -1,6 +1,5 @@
 import React from "react";
 import LinkItem from "./LinkItem";
-import SearchBox from "./SearchBox";
 import styled from "styled-components";
 import Footer from "./Footer";
 
@@ -24,8 +23,6 @@ const Menu = () => {
     return (
         <Wrapper>
             <MenuWrapper>
-                <SearchBox />
-
                 <ul
                     style={{
                         margin: "0",
@@ -38,12 +35,6 @@ const Menu = () => {
                         text="Add new"
                         href="/create"
                     />
-                    {/* <LinkItem
-                icon="bx bx-share-alt"
-                text="Shared with Me"
-                href="/"
-            /> */}
-                    {/* <LinkItem icon="bx bx-mail-send" text="Sent Mails" href="/" /> */}
                     <LinkItem
                         icon="bx bx-user"
                         text="Settings"
