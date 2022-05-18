@@ -78,6 +78,4 @@ emailSender.on("mail_sent", sendedEmailHandler);
 emailSender.on("send_new_email", newEmailHandler);
 emailSender.on("send_pending_emails", pendingEmailHandler);
 
-// emailSender.emit("new_email", { name: "TAT" });
-
 module.exports = { events, emailSender };

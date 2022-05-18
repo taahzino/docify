@@ -23,6 +23,8 @@ const verifyNodeMailer = () => {
             console.log("Nodemailer is ready send our messages");
         }
     });
+
+    console.log(global.nodemailerStatus);
 };
 
 const sendMail = ({ to, subject, text, filename, user }, callback) => {
