@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import GalleryItem from "./GalleryItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDocs } from "../contexts/DocsContext";
@@ -7,10 +7,6 @@ import GridRow from "./GridRow";
 
 const Gallery = ({ docs, loading }) => {
     const { hasMore, setShouldGetDocs } = useDocs();
-
-    useEffect(() => {
-        console.log(docs);
-    }, [docs]);
 
     return (
         <InfiniteScroll

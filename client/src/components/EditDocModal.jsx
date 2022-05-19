@@ -6,7 +6,7 @@ import AlertComponent from "./Alert";
 import Loading from "./Loading";
 
 const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
-    const [newTitle, setNewTitle] = useState(doc.title);
+    const [newTitle, setNewTitle] = useState("");
 
     const [shouldUpdate, setShouldUpdate] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -15,6 +15,10 @@ const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
     const [successMessage, setSuccessMessage] = useState("");
 
     const { dispatchDocs } = useDocs();
+
+    useEffect(() => {
+        setNewTitle(doc.title);
+    }, [doc]);
 
     const updateResult = useXhr(
         shouldUpdate,
@@ -28,6 +32,7 @@ const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
     const handleClose = () => {
         setErrorMessage("");
         setSuccessMessage("");
+        setNewTitle("");
         setLoading(false);
         closeModal();
     };
@@ -95,7 +100,7 @@ const EditDocModal = ({ show, handleClose: closeModal, doc }) => {
                             onChange={(e) => {
                                 setNewTitle(e.target.value);
                             }}
-                            placeholder="Ex: Passport, NID..."
+                            placeholder="Enter new title"
                         />
                     </Form.Group>
 
