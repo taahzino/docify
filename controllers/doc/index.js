@@ -8,4 +8,5 @@ module.exports = {
     updateOne: require("./updateOne"),
     downloadOne: require("./downloadOne"),
     deleteOne: require("./deleteOne"),
+    searchBySlug: require("./searchBySlug"),
 };
