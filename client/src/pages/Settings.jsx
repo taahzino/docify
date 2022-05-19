@@ -6,6 +6,7 @@ import { Form, Button } from "react-bootstrap";
 import AlertComponent from "../components/Alert";
 import Loading from "../components/Loading";
 import PageTitle from "../components/PageTitle";
+import { setCookie } from "../utils/setCookie";
 
 const Wrapper = styled.div`
     max-width: 500px;
@@ -74,6 +75,7 @@ const Settings = () => {
                 delete result.data.message;
 
                 setCurrentUser(result.data);
+                setCookie("currentUser", JSON.stringify(currentUser));
 
                 setPassword("");
                 setPassword2("");
