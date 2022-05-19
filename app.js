@@ -47,7 +47,7 @@ io.on("connect", (socket) => {
 app.use(requestResponseMiddlewares);
 
 // Routes
-app.use("/api", require("./routes/api"));
+app.use("/api", require("./routes/api/index"));
 
 // Error handing middleware
 app.use(errorHandler);

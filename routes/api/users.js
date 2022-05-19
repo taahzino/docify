@@ -8,8 +8,8 @@ const {
     logout,
     getData,
     updateData,
-} = require("../controllers/user");
-const { authGuard } = require("../middlewares/authMiddleware");
+} = require("../../controllers/user");
+const { authGuard } = require("../../middlewares/authMiddleware");
 
 // Create the Router
 const users = express.Router();
