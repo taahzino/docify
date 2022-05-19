@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -9,8 +9,16 @@ import PrivateRoute from "./PrivateRoute";
 import Create from "../pages/Create";
 import Settings from "../pages/Settings";
 import CustomSwitch from "./CustomSwitch";
+import { useDocs } from "../contexts/DocsContext";
 
 const Router = () => {
+    const { removeDocs, getInitialDocs } = useDocs();
+
+    useEffect(() => {
+        removeDocs();
+        getInitialDocs();
+    }, []);
+
     return (
         <BrowserRouter>
             <CustomSwitch>

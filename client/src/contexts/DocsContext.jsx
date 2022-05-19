@@ -63,6 +63,19 @@ export const DocsProvider = ({ children }) => {
         }/${limit}`
     );
 
+    const removeDocs = () => {
+        dispatchDocs({
+            type: "unload",
+        });
+        setPageNumber(0);
+        setShouldGetDocs(false);
+    };
+
+    const getInitialDocs = () => {
+        setPageNumber(0);
+        setShouldGetDocs(true);
+    };
+
     const deleteSome = () => {
         dispatchDocs({
             type: "deleteSome",
@@ -108,6 +121,8 @@ export const DocsProvider = ({ children }) => {
         deleteSome,
         docsLoaded,
         setDocsLoaded,
+        removeDocs,
+        getInitialDocs,
     };
     return (
         <DocsContext.Provider value={value}>{children}</DocsContext.Provider>

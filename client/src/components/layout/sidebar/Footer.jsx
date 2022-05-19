@@ -8,7 +8,7 @@ const Footer = () => {
     const [shouldLogout, setShouldLogout] = useState(false);
 
     const { logout } = useAuth();
-    const { dispatchDocs } = useDocs();
+    const { removeDocs } = useDocs();
 
     const logoutHandler = () => {
         setShouldLogout(true);
@@ -22,7 +22,7 @@ const Footer = () => {
 
     useEffect(() => {
         if (logoutResult && logoutResult.type === "success") {
-            dispatchDocs({ type: "unload" });
+            removeDocs();
             logout();
         }
 
