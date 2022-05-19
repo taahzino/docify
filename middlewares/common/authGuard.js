@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 
 // Modules
-const generateToken = require("../utils/generateToken");
+const generateToken = require("../../utils/generateToken");
 
 // Functions
 const authGuard = asyncHandler(async (req, res, next) => {
@@ -57,4 +57,4 @@ const authGuard = asyncHandler(async (req, res, next) => {
 });
 
 // Export
-module.exports = { authGuard };
+module.exports = authGuard;

@@ -1,8 +1,8 @@
 const asyncHandler = require("express-async-handler");
-const Doc = require("../../models/docModel");
+const Doc = require("../../models/Doc");
 const isValidMID = require("../../utils/isValidMID");
 
-const checkDocAccess = asyncHandler(async (req, res, next) => {
+const checkAccess = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
     if (!isValidMID(id)) {
         res.status(400);
@@ -27,4 +27,4 @@ const checkDocAccess = asyncHandler(async (req, res, next) => {
     next();
 });
 
-module.exports = checkDocAccess;
+module.exports = checkAccess;

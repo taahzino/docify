@@ -1,8 +1,8 @@
-const docModel = require("../../models/docModel");
+const Doc = require("../../models/Doc");
 
 const updateOne = async (req, res) => {
     try {
-        const doc = await docModel.findByIdAndUpdate(
+        const doc = await Doc.findByIdAndUpdate(
             res.locals.doc._id,
             res.locals.updatedDoc,
             {

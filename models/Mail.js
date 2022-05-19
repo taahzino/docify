@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // Create the schema
-const mailSchema = mongoose.Schema(
+const schema = mongoose.Schema(
     {
         status: {
             type: String,
@@ -40,7 +40,7 @@ const mailSchema = mongoose.Schema(
 );
 
 // Create the model
-const mailModel = mongoose.model("Mail", mailSchema);
+const Mail = mongoose.model("Mail", schema);
 
 // Export the model
-module.exports = mailModel;
+module.exports = Mail;

@@ -2,39 +2,31 @@
 const express = require("express");
 
 // Internal Modules
-const { authGuard } = require("../../middlewares/authMiddleware");
-const {
-    getDocFile,
-    getOne,
-    getAll,
-    getFew,
-    saveOne,
-    downloadOne,
-    deleteOne,
-    updateOne,
-    mailOne,
-    searchBySlug,
-} = require("../../controllers/doc");
-const checkDocAccess = require("../../middlewares/docMiddlewares/checkDocAccess");
-const updateDocValidation = require("../../middlewares/docMiddlewares/updateDocValidation");
+const docControllers = require("../../controllers/doc");
+const { common, doc: docMiddlewares } = require("../../middlewares/");
 
 // Create the Router
 const docs = express.Router();
 
 // Middlewares
-docs.use(authGuard);
+docs.use(common.authGuard);
 
 // Request Handling
-docs.get("/search", searchBySlug);
-docs.get("/limit/:skip/:limit", getFew);
-docs.get("/data/:id", checkDocAccess, getOne);
-docs.get("/download/:id", checkDocAccess, downloadOne);
-docs.post("/mail/:id", checkDocAccess, mailOne);
-docs.post("/", saveOne);
-docs.get("/", getAll);
-docs.get("/:id", checkDocAccess, getDocFile);
-docs.delete("/:id", checkDocAccess, deleteOne);
-docs.put("/:id", checkDocAccess, updateDocValidation, updateOne);
+docs.route("/").get(docControllers.getAll).post(docControllers.saveOne);
+
+docs.get("/search", docControllers.searchBySlug);
+docs.get("/limit/:skip/:limit", docControllers.getFew);
+
+docs.use("/:action/:id", docMiddlewares.checkAccess)
+    .get("/data/:id", docControllers.getOne)
+    .get("/download/:id", docControllers.downloadOne)
+    .post("/mail/:id", docControllers.mailOne);
+
+docs.use("/:id", docMiddlewares.checkAccess)
+    .route("/:id")
+    .get(docControllers.getDocFile)
+    .delete(docControllers.deleteOne)
+    .put(docMiddlewares.updateValidation, docControllers.updateOne);
 
 // Export the router
 module.exports = docs;

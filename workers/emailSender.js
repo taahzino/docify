@@ -2,7 +2,7 @@ const events = require("events");
 const { sendMail } = require("../config/nodemailer");
 const emailSender = new events.EventEmitter();
 
-const Mail = require("../models/mailModel");
+const Mail = require("../models/Mail");
 
 const sendedEmailHandler = async (data) => {
     try {

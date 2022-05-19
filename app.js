@@ -4,26 +4,25 @@ const dotenv = require("dotenv");
 const colors = require("colors");
 const socketIo = require("socket.io");
 const http = require("http");
-const requestResponseMiddlewares = require("./middlewares/requestResponse");
 
 // Configure dotenv
 dotenv.config();
 
-// Establish database connection
-const connectDB = require("./config/database");
-connectDB();
-
-// Nodemailer connection
-const { verifyNodeMailer } = require("./config/nodemailer");
-verifyNodeMailer();
-
 // Internal Modules
-const { errorHandler } = require("./middlewares/errorMiddleware");
+const middlewares = require("./middlewares");
 const { emailSender } = require("./workers/emailSender");
+const { verifyNodeMailer } = require("./config/nodemailer");
+const connectDB = require("./config/database");
 
 // Get Environment Vairables
 const { PORT } = process.env;
 const APP_ORIGINS = process.env.APP_ORIGINS.split("_");
+
+// Establish database connection
+connectDB();
+
+// Nodemailer connection
+verifyNodeMailer();
 
 // Create Express App
 const app = express();
@@ -39,18 +38,19 @@ const io = socketIo(server, {
 
 global.io = io;
 
+// Connect user with server
 io.on("connect", (socket) => {
     socket.join(`NOTIFICATION_ROOM_${socket.id}`);
 });
 
 // Request-Response Middlewares
-app.use(requestResponseMiddlewares);
+app.use(middlewares.common.reqRes);
 
 // Routes
 app.use("/api", require("./routes/api/index"));
 
 // Error handing middleware
-app.use(errorHandler);
+app.use(middlewares.common.errorHandler);
 
 // Start the server
 server.listen(PORT, () => {

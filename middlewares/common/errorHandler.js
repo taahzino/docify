@@ -19,6 +19,4 @@ const errorHandler = (err, req, res, next) => {
 };
 
 // Export the middleware
-module.exports = {
-    errorHandler,
-};
+module.exports = errorHandler;

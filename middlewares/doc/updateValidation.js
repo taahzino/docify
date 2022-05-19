@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 
-const updateDocValidation = asyncHandler((req, res, next) => {
+const updateValidation = asyncHandler((req, res, next) => {
     const title =
         req.body.title && req.body.title.trim().length > 0
             ? req.body.title
@@ -23,4 +23,4 @@ const updateDocValidation = asyncHandler((req, res, next) => {
     next();
 });
 
-module.exports = updateDocValidation;
+module.exports = updateValidation;

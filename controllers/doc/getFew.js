@@ -1,8 +1,8 @@
-const docModel = require("../../models/docModel");
+const Doc = require("../../models/Doc");
 
 const getFew = async (req, res) => {
     try {
-        const docs = await docModel.find({ user: res.locals.user._id }, null, {
+        const docs = await Doc.find({ user: res.locals.user._id }, null, {
             sort: { updatedAt: -1 },
             skip: req.params.skip,
             limit: req.params.limit,

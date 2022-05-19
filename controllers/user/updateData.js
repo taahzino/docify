@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const asyncHanlder = require("express-async-handler");
 
 // Modules
-const User = require("../../models/userModel");
+const User = require("../../models/User");
 
 // @desc Update user data
 // @route PUT /api/users/me

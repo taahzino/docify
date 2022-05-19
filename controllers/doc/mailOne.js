@@ -1,5 +1,5 @@
 const validator = require("validator");
-const mailModel = require("../../models/mailModel");
+const Mail = require("../../models/Mail");
 const { emailSender } = require("../../workers/emailSender");
 
 const mailOne = async (req, res) => {
@@ -32,7 +32,7 @@ const mailOne = async (req, res) => {
                 ? req.body.message
                 : "";
 
-        const mail = await mailModel.create({
+        const mail = await Mail.create({
             receiver,
             subject,
             filename: doc.filename,

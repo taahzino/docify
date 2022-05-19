@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // Create the schema
-const docSchema = mongoose.Schema(
+const schema = mongoose.Schema(
     {
         title: {
             type: String,
@@ -29,7 +29,7 @@ const docSchema = mongoose.Schema(
 );
 
 // Create the model
-const docModel = mongoose.model("Doc", docSchema);
+const Doc = mongoose.model("Doc", schema);
 
 // Export the model
-module.exports = docModel;
+module.exports = Doc;

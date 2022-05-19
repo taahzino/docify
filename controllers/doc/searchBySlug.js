@@ -1,9 +1,16 @@
-const docModel = require("../../models/docModel");
+const Doc = require("../../models/Doc");
 
 const searchBySlug = async (req, res) => {
+    let status = 500;
     try {
-        const slug = req.query.slug.trim().toString();
-        const docs = await docModel.find(
+        let slug = req.query.slug;
+
+        if (!slug || slug.trim().length < 1) {
+            status = 400;
+            throw new Error("Slug is required");
+        }
+
+        const docs = await Doc.find(
             {
                 title: {
                     $regex: slug,
@@ -20,8 +27,9 @@ const searchBySlug = async (req, res) => {
             docs,
         });
     } catch (error) {
-        res.status(500).json({
-            message: "Something wrong happened!",
+        res.status(status).json({
+            status,
+            message: error.message,
         });
     }
 };

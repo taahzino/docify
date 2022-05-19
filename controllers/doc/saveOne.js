@@ -1,5 +1,5 @@
 const { uploader } = require("../../utils/uploader");
-const docModel = require("../../models/docModel");
+const Doc = require("../../models/Doc");
 
 const saveOne = async (req, res) => {
     uploader.single("document")(req, res, async (err) => {
@@ -10,7 +10,7 @@ const saveOne = async (req, res) => {
 
             const file = req.file;
 
-            const newDoc = await docModel.create({
+            const newDoc = await Doc.create({
                 title: req.body.title,
                 filename: file.filename,
                 mimetype: file.mimetype,
