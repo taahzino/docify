@@ -9,6 +9,7 @@ import Settings from "../pages/Settings";
 import CustomSwitch from "./CustomSwitch";
 import { useDocs } from "../contexts/DocsContext";
 import { useAuth } from "../contexts/AuthContext";
+import PrivateRoutes from "./PrivateRoutes";
 
 const Router = () => {
   const { removeDocs, getInitialDocs } = useDocs();
@@ -30,19 +31,11 @@ const Router = () => {
           path="/signup"
           element={currentUser ? <Navigate to="/" /> : <Signup />}
         />
-        <Route
-          path="/"
-          element={currentUser ? <Home /> : <Navigate to="/login" />}
-        />
-
-        <Route
-          path="/create"
-          element={currentUser ? <Create /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/settings"
-          element={currentUser ? <Settings /> : <Navigate to="/login" />}
-        />
+        <Route path="/*" element={<PrivateRoutes />}>
+          <Route path="" element={<Home />} />
+          <Route path="create" element={<Create />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
 
         <Route element={<NotFoundPage />} />
       </CustomSwitch>
