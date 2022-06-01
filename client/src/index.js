@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App.jsx";
+import App from "./components/App";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/global.css";
 import "./fonts/VarelaRound.css";
