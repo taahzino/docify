@@ -6,133 +6,132 @@ import axios from "axios";
 import { useDocs } from "../contexts/DocsContext";
 import Loading from "../components/Loading";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import Layout from "../components/layout/Layout";
 
 const Wrapper = styled.div`
-    max-width: 500px;
-    width: 100%;
+  max-width: 500px;
+  width: 100%;
 `;
 
 const Create = () => {
-    const [title, setTitle] = useState("");
-    const [file, setFile] = useState();
+  const [title, setTitle] = useState("");
+  const [file, setFile] = useState();
 
-    const [shouldRequest, setShouldRequest] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [shouldRequest, setShouldRequest] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-    const { Authorization } = useAuth();
+  const { Authorization } = useAuth();
 
-    const history = useHistory();
+  const navigate = useNavigate();
 
-    const { dispatchDocs, deleteSome } = useDocs();
+  const { dispatchDocs, deleteSome } = useDocs();
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        setShouldRequest(false);
-        setErrorMessage("");
-        setLoading(false);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setShouldRequest(false);
+    setErrorMessage("");
+    setLoading(false);
 
-        if (!title || !file) {
-            return setErrorMessage("Please give a title and select a file");
-        }
-        setLoading(true);
-        setShouldRequest(true);
-    };
+    if (!title || !file) {
+      return setErrorMessage("Please give a title and select a file");
+    }
+    setLoading(true);
+    setShouldRequest(true);
+  };
 
-    useEffect(() => {
-        (async () => {
-            if (shouldRequest) {
-                const formData = new FormData();
-                formData.append("title", title);
-                formData.append("document", file);
+  useEffect(() => {
+    (async () => {
+      if (shouldRequest) {
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("document", file);
 
-                axios
-                    .post(
-                        `${process.env.REACT_APP_SERVER_URL}/api/docs`,
-                        formData,
-                        {
-                            headers: {
-                                Authorization,
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }
-                    )
-                    .then(function (response) {
-                        setSuccessMessage(response.data.message);
-                        setTitle("");
-                        setFile(null);
-                        dispatchDocs({
-                            type: "create",
-                            doc: response.data.doc,
-                        });
-                        deleteSome();
-                        setTimeout(() => {
-                            setSuccessMessage(null);
-                            history.push("/");
-                        }, 1000);
-                    })
-                    .catch(function (error) {
-                        setErrorMessage(error.response.data.message);
-                        if (error.response.status === 401) {
-                            window.location.href = "/";
-                        }
-                    })
-                    .then(() => {
-                        setLoading(false);
-                    });
+        axios
+          .post(`${process.env.REACT_APP_SERVER_URL}/api/docs`, formData, {
+            headers: {
+              Authorization,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(function (response) {
+            setSuccessMessage(response.data.message);
+            setTitle("");
+            setFile(null);
+            dispatchDocs({
+              type: "create",
+              doc: response.data.doc,
+            });
+            deleteSome();
+            setTimeout(() => {
+              setSuccessMessage(null);
+              navigate("/");
+            }, 1000);
+          })
+          .catch(function (error) {
+            setErrorMessage(error.response.data.message);
+            if (error.response.status === 401) {
+              window.location.href = "/";
             }
-        })();
+          })
+          .then(() => {
+            setLoading(false);
+          });
+      }
+    })();
 
-        return () => {
-            setShouldRequest(false);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [Authorization, file, shouldRequest, title]);
-    return (
-        <Wrapper>
-            <PageTitle>Add new document</PageTitle>
-            <Form onSubmit={submitHandler}>
-                <AlertComponent variant="danger" show={errorMessage}>
-                    {errorMessage}
-                </AlertComponent>
+    return () => {
+      setShouldRequest(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Authorization, file, shouldRequest, title]);
+  return (
+    <Layout>
+      <Wrapper>
+        <PageTitle>Add new document</PageTitle>
+        <Form onSubmit={submitHandler}>
+          <AlertComponent variant="danger" show={errorMessage}>
+            {errorMessage}
+          </AlertComponent>
 
-                <AlertComponent variant="success" show={successMessage}>
-                    {successMessage}
-                </AlertComponent>
+          <AlertComponent variant="success" show={successMessage}>
+            {successMessage}
+          </AlertComponent>
 
-                <Loading loading={loading} text="Uploading" />
+          <Loading loading={loading} text="Uploading" />
 
-                <Form.Group className="mb-3" controlId="formBasicTitle">
-                    <Form.Label>Document Title</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Ex: Passport, NID..."
-                        value={title}
-                        onChange={(e) => {
-                            setTitle(e.target.value);
-                        }}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicTitle">
-                    <Form.Label>Select File</Form.Label>
-                    <Form.Control
-                        type="file"
-                        onChange={(e) => {
-                            setFile(e.target.files[0]);
-                        }}
-                    />
-                </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicTitle">
+            <Form.Label>Document Title</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Ex: Passport, NID..."
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicTitle">
+            <Form.Label>Select File</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+            />
+          </Form.Group>
 
-                <Button variant="primary" type="submit" className="px-4">
-                    Upload
-                </Button>
-            </Form>
-        </Wrapper>
-    );
+          <Button variant="primary" type="submit" className="px-4">
+            Upload
+          </Button>
+        </Form>
+      </Wrapper>
+    </Layout>
+  );
 };
 
 export default Create;
